@@ -1,7 +1,24 @@
 package com.tecsharp.store.controllers.users;
 
-public class UsuariosController {
- 
+import java.util.Scanner;
 
-	
+import com.tecsharp.store.entity.usuarios.Usuario;
+import com.tecsharp.store.service.users.impl.UsuariosServiceImpl;
+
+public class UsuariosController {
+
+	public Usuario login() {
+
+		UsuariosServiceImpl service = new UsuariosServiceImpl();
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("INGRESA TU NOMBRE DE USUARIO");
+		String username = sc.next();
+		
+		System.out.println("INGRESA TU CONTRASENA");
+		String password = sc.next();
+		
+		return service.login(username, password);
+	}
+
 }

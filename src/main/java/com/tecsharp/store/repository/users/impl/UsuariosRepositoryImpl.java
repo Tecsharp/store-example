@@ -1,48 +1,75 @@
 package com.tecsharp.store.repository.users.impl;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import com.tecsharp.store.repository.users.UsuariosRpository;
-import com.tecsharp.store.MysqlConnector;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import com.tecsharp.store.entity.usuarios.Usuario;
+import com.tecsharp.store.repository.users.UsuariosRpository;
+import com.tecsharp.store.utils.Constantes;
 
 public class UsuariosRepositoryImpl implements UsuariosRpository {
 
-	private boolean isLogged;
-	private boolean isAdmin;
-	private ResultSet resultado;
-
 	@Override
-	public boolean getUserclient(String username, String password) {
-		MysqlConnector conn = new MysqlConnector();
-		try {
+	public Usuario findById(Integer userId) {
 
+		Usuario usuario = null;
+		String query = "SELECT name_usr, username, passwd, user_type FROM users WHERE id_user = ?";
+
+		try (Connection connection = DriverManager.getConnection(Constantes.DB_PROPERTIES);
+				PreparedStatement statement = connection.prepareStatement(query)) {
 			
-			resultado = conn.consultarRegistros(
-					"SELECT name_usr, username, passwd, user_type FROM users \n"
-					+ "WHERE username = '" + username + "'");
-			if (resultado.next()) {
-				String usr = resultado.getString("username");
-				String pswd = resultado.getString("passwd");
-				Integer validaAdmin = resultado.getInt("user_type");
-				//String nombre_cliente = resultado.getString("nombre_persona");
-
-				if (usr.equals(username) && pswd.equals(password)) {
-					isLogged = true;
-					if (validaAdmin == 2) {
-						System.out.println("Conectado como admin");
-						isAdmin = true;
-					}
-
-				} else {
-					System.out.println("El usuario es incorrecto");
-					isLogged = false;
-					conn.desconectar();
-				}
+			statement.setInt(1, userId);
+			ResultSet result = statement.executeQuery();
+			
+			while (result.next()) {
+				usuario = new Usuario();
+				usuario.setNameUser(result.getString("name_usr"));
 			}
-		} catch (SQLException e) {
+		}
+
+		catch (Exception e) {
 			e.printStackTrace();
 		}
-		return isLogged && isAdmin;
+
+		return usuario;
 	}
 
+	@Override
+	public Usuario findByUsernameAndPassword(String username, String password) {
+		
+		Usuario usuario = null;
+		String query = "SELECT * FROM users WHERE username = ? AND passwd = ?";
+
+		try (Connection connection = DriverManager.getConnection(Constantes.DB_PROPERTIES);
+				PreparedStatement statement = connection.prepareStatement(query)) {
+			
+			statement.setString(1, username);
+			statement.setString(2, password);
+			ResultSet result = statement.executeQuery();
+			
+			while (result.next()) {
+				usuario = new Usuario();
+				usuario.setIdUser(result.getInt("id_user"));
+				usuario.setNameUser(result.getString("name_usr"));
+				usuario.setLastNameUsr(result.getString("lastname_usr"));
+				usuario.setUsername(result.getString("username"));
+				usuario.setPassword(result.getString("passwd"));
+				usuario.setEmail(result.getString("emailusr"));
+				usuario.setDateCreate(result.getDate("date_create"));
+				usuario.setDateUpdate(result.getDate("date_update"));
+				usuario.setStatus(result.getInt("id_status"));
+			}
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return usuario;
+	}
+
+
+	
 }

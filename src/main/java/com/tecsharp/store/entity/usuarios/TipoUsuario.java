@@ -2,7 +2,7 @@ package com.tecsharp.store.entity.usuarios;
 
 import java.util.Date;
 
-import com.tecsharp.store.entity.estatus.Estatus;
+import com.tecsharp.store.entity.estatus.EnumEstatus;
 
 import lombok.Data;
 
@@ -16,6 +16,6 @@ public class TipoUsuario {
 	private Integer userUpdate;
 	private Date dateCreate;
 	private Date dateUpdate;
-	private Estatus status;
+	private EnumEstatus status;
 
 }

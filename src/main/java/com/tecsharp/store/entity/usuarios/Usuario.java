@@ -2,16 +2,15 @@ package com.tecsharp.store.entity.usuarios;
 
 import java.util.Date;
 
-import com.tecsharp.store.entity.estatus.Estatus;
-
 import lombok.Data;
 
 @Data
 public class Usuario {
 	
-	private Integer nameUsr;
-	private String lastNameUsr;
+	private Integer idUser;
 	private String username;
+	private String nameUser;
+	private String lastNameUsr;
 	private String password;
 	private String email;
 	private TipoUsuario userType;
@@ -20,7 +19,7 @@ public class Usuario {
 	private Integer userUpdate;
 	private Date dateCreate;
 	private Date dateUpdate;
-	private Estatus status;
+	private Integer status;
 	
 
 }

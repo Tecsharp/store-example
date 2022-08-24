@@ -2,7 +2,7 @@ package com.tecsharp.store.entity.productos;
 
 import java.util.Date;
 
-import com.tecsharp.store.entity.estatus.Estatus;
+import com.tecsharp.store.entity.estatus.EnumEstatus;
 
 import lombok.Data;
 
@@ -19,5 +19,5 @@ public class Producto {
 	private Integer userUpdate;
 	private Date dateCreate;
 	private Date dateUpdate;
-	private Estatus status;
+	private EnumEstatus status;
 }

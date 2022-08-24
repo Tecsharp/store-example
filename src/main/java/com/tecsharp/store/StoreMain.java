@@ -1,33 +1,29 @@
 package com.tecsharp.store;
 
-import java.util.Scanner;
-
-import com.tecsharp.store.repository.users.impl.UsuariosRepositoryImpl;
-
+import com.tecsharp.store.controllers.productos.TipoProductosController;
+import com.tecsharp.store.controllers.users.UsuariosController;
+import com.tecsharp.store.entity.usuarios.Usuario;
 
 public class StoreMain {
 
 	public static void main(String[] args) {
-
-		Scanner sc = new Scanner (System.in);
-		UsuariosRepositoryImpl cliente = new UsuariosRepositoryImpl();
+		System.out.println("======================");
+		System.out.println("BIENVENIDO A MI TIENDITA");
+		System.out.println("======================");
 		
-		System.out.println("BIENVENIDO A LA TIENDITA\n=======================");
-		System.out.println("INICIA SESIÓN");
-
-		System.out.println("Escribe la usuario");
-		String username = sc.next();
+		UsuariosController usuarios = new UsuariosController();
+		Usuario usuario = null;
 		
-		System.out.println("Escribe el contraseña");
-		String password = sc.next();
+		while(usuario == null) {
+			usuario = usuarios.login();
+		}
 		
-		cliente.getUserclient(username, password);
-		
+		TipoProductosController productos = new TipoProductosController();
+		productos.typeProductView();
 		
 		
 		
-		
-
 	}
 
+	
 }

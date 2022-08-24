@@ -3,7 +3,7 @@ package com.tecsharp.store.entity.ventas;
 import java.util.Date;
 
 
-import com.tecsharp.store.entity.estatus.Estatus;
+import com.tecsharp.store.entity.estatus.EnumEstatus;
 import com.tecsharp.store.entity.productos.Producto;
 import com.tecsharp.store.entity.usuarios.Usuario;
 
@@ -21,6 +21,6 @@ public class Venta {
 	private Integer userUpdate;
 	private Date dateCreate;
 	private Date dateUpdate;
-	private Estatus status;
+	private EnumEstatus status;
 	
 }

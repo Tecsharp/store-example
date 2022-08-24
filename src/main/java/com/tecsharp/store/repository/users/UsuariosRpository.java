@@ -1,9 +1,10 @@
 package com.tecsharp.store.repository.users;
 
+import com.tecsharp.store.entity.usuarios.Usuario;
+
 public interface UsuariosRpository {
 
-	boolean getUserclient(String username, String password);
-
+	Usuario findById(Integer userId);
 	
-	
+	Usuario findByUsernameAndPassword(String username, String password);
 }
