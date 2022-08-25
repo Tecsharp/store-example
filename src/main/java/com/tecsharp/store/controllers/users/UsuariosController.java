@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import com.tecsharp.store.entity.usuarios.Usuario;
 import com.tecsharp.store.service.users.impl.UsuariosServiceImpl;
+import com.tecsharp.store.utils.Utilidad;
 
 public class UsuariosController {
 
@@ -17,8 +18,10 @@ public class UsuariosController {
 		
 		System.out.println("INGRESA TU CONTRASENA");
 		String password = sc.next();
+		Utilidad.clearScreen();
 		
 		return service.login(username, password);
 	}
-
+	
+	
 }

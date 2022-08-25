@@ -1,5 +1,29 @@
 package com.tecsharp.store.service.productos.impl;
 
-public class ProductosServiceImpl {
+import java.util.List;
+
+import com.tecsharp.store.entity.productos.Producto;
+import com.tecsharp.store.entity.productos.TipoProducto;
+import com.tecsharp.store.repository.productos.impl.ProductosRepositoryImpl;
+import com.tecsharp.store.service.productos.ProductosService;
+
+public class ProductosServiceImpl implements ProductosService{
+
+	@Override
+	public List<Producto> getProducto(TipoProducto tipoProducto) {
+		ProductosRepositoryImpl producto = new ProductosRepositoryImpl();
+		return producto.getProductos(tipoProducto.getIdProductType());
+	}
+
+	@Override
+	public Producto validaProductoID(Integer productoID, List<Producto> productos) {
+		for (Producto producto : productos) {
+			if(productoID.equals(producto.getIdProduct())) {
+				return producto;
+			}
+		}
+		return null;
+	}
+
 
 }

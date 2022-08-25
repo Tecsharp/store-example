@@ -8,4 +8,7 @@ public interface TipoProductosService {
 
 	public List<TipoProducto> getTipoProductos();
 	
+	public TipoProducto validaTipoProductoID(Integer idTipoProducto, List<TipoProducto>tipoProductos);
+	
+	
 }
