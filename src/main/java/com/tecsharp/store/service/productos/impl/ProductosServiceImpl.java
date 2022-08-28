@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.tecsharp.store.entity.productos.Producto;
 import com.tecsharp.store.entity.productos.TipoProducto;
+import com.tecsharp.store.entity.usuarios.Usuario;
 import com.tecsharp.store.repository.productos.impl.ProductosRepositoryImpl;
 import com.tecsharp.store.service.productos.ProductosService;
 
@@ -23,6 +24,21 @@ public class ProductosServiceImpl implements ProductosService{
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public Producto agregarCarritoByIdUser(Integer productoID, Integer idUser) {
+	
+		ProductosRepositoryImpl carritoData = new ProductosRepositoryImpl();
+		return carritoData.agregarProductoAlCarrito(productoID, idUser);
+	}
+
+	@Override
+	public boolean validaProductoCarritoAgregado() {
+		
+		
+		
+		return true;
 	}
 
 

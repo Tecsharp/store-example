@@ -1,11 +1,14 @@
 package com.tecsharp.store.controllers.productos;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import com.tecsharp.store.entity.productos.Producto;
 import com.tecsharp.store.entity.productos.TipoProducto;
+import com.tecsharp.store.entity.usuarios.Usuario;
 import com.tecsharp.store.service.productos.impl.ProductosServiceImpl;
+import com.tecsharp.store.service.users.impl.UsuariosServiceImpl;
 import com.tecsharp.store.utils.Utilidad;
 
 public class ProductosController {
@@ -21,30 +24,77 @@ public class ProductosController {
 			ProductosServiceImpl service = new ProductosServiceImpl();
 			List<Producto> productos = service.getProducto(tipoProducto);
 
-			int i = 0;
+			int i = 1;
 			for (Producto productos1 : productos) {
 				System.out.println(i++ + ": ".concat(productos1.getName()));
 			}
 
 			idProducto = sc.nextInt();
-			producto = service.validaProductoID(idProducto, productos);
+			Producto productoRecuperado = productos.get(idProducto - 1);
+
+			producto = service.validaProductoID(productoRecuperado.getIdProduct(), productos); // Envia entero y lista
+																								// productos
+
 			Utilidad.clearScreen();
 
 		}
 		return producto;
 
 	}
-	
-	public void mostrarArticuloSeleccionado(Producto producto, TipoProducto tipoProducto) {
+
+	public Producto mostrarArticuloSeleccionado(Producto producto, TipoProducto tipoProducto) {
+
+		Scanner sc = new Scanner(System.in);
 		ProductosServiceImpl service = new ProductosServiceImpl();
 		List<Producto> productos = service.getProducto(tipoProducto);
-		
-		System.out.println("ARTICULO SELECCIONADO:");
-		System.out.println("Nombre: " + producto.getName());
-		System.out.println("Stock disponible: " + producto.getStock());
-		System.out.println("Precio: " + producto.getPrice());
-		System.out.println("Caracteristicas: " + producto.getDescription());
-		
+
+		Integer agregarOpcion = null;
+		while (agregarOpcion == null) {
+
+			System.out.println("ARTICULO SELECCIONADO:");
+			System.out.println("Nombre: " + producto.getName());
+			System.out.println("Stock disponible: " + producto.getStock());
+			System.out.println("Precio: " + producto.getPrice());
+			System.out.println("Caracteristicas: " + producto.getDescription());
+
+			System.out.println("Presiona 1 para agregar al carrito");
+			agregarOpcion = sc.nextInt();
+			if (agregarOpcion == 1) {
+
+				return producto;
+			} else {
+				return null;
+			}
+		}
+		return null;
+
+	}
+
+	public Producto agregarAlCarritoVista(Producto producto, Usuario usuario) {
+		Scanner sc = new Scanner(System.in);
+		Integer agregarOpcion = null;
+		while (agregarOpcion == null) {
+			ProductosServiceImpl carritoData = new ProductosServiceImpl();
+
+			String productoNombre = producto.getName();
+			Integer productoID = producto.getIdProduct();
+			Integer idUser = usuario.getIdUser();
+
+			System.out.println("Has agregado: " + productoNombre + " al carrito.");
+
+			System.out.println("Presiona 1 para continuar");
+			agregarOpcion = sc.nextInt();
+
+			if (agregarOpcion == 1) {
+				return carritoData.agregarCarritoByIdUser(productoID, idUser);
+			} else {
+				return null;
+			}
+
+		}
+
+		return null;
+
 	}
 
 }

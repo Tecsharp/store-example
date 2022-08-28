@@ -6,6 +6,7 @@ import com.tecsharp.store.controllers.users.UsuariosController;
 import com.tecsharp.store.entity.productos.Producto;
 import com.tecsharp.store.entity.productos.TipoProducto;
 import com.tecsharp.store.entity.usuarios.Usuario;
+import com.tecsharp.store.service.productos.impl.ProductosServiceImpl;
 
 public class StoreMain {
 
@@ -13,26 +14,31 @@ public class StoreMain {
 		System.out.println("========================");
 		System.out.println("BIENVENIDO A MI TIENDITA");
 		System.out.println("========================");
-		
+
 		UsuariosController usuarios = new UsuariosController();
 		Usuario usuario = null;
-		
-		while(usuario == null) {
+
+		while (usuario == null) {
 			usuario = usuarios.login();
 		}
-		
-		TipoProductosController tipoProductos = new TipoProductosController();
-		TipoProducto tipoProducto = tipoProductos.getTypeProductID();
-		
-		ProductosController productos = new ProductosController();
-		Producto producto = productos.getProductos(tipoProducto);
-		
-		productos.mostrarArticuloSeleccionado(producto, tipoProducto);
-		
-		
-		
+
+		Object isProducto = null;
+		while (isProducto == null) {
+			TipoProductosController tipoProductos = new TipoProductosController();
+			TipoProducto tipoProducto = tipoProductos.getTypeProductID();
+
+			ProductosController productos = new ProductosController();
+			Producto producto = productos.getProductos(tipoProducto);
+
+			productos.mostrarArticuloSeleccionado(producto, tipoProducto);
+
+			// ProductosServiceImpl productoService = new ProductosServiceImpl();
+
+			productos.agregarAlCarritoVista(producto, usuario);
+			
+
+		}
+
 	}
 
-
-	
 }

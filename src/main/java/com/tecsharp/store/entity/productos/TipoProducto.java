@@ -17,3 +17,4 @@ public class TipoProducto {
 	private Integer status;
 
 }
+
