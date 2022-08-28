@@ -24,12 +24,15 @@ public class StoreMain {
 
 		Object isProducto = null;
 		while (isProducto == null) {
+			// INSTANCIAS //
 			TipoProductosController tipoProductos = new TipoProductosController();
-			TipoProducto tipoProducto = tipoProductos.getTypeProductID();
-
 			ProductosController productos = new ProductosController();
-			Producto producto = productos.getProductos(tipoProducto);
 			ProductosServiceImpl service = new ProductosServiceImpl();
+			
+			
+			TipoProducto tipoProducto = tipoProductos.getTypeProductID(usuario); //Obtiene la lista de departamentos
+			
+			Producto producto = productos.getProductos(tipoProducto); //Obtiene la lista de productos
 			
 			if(productos.mostrarArticuloSeleccionado(producto, tipoProducto) != null) {
 				productos.agregarAlCarritoVista(producto, usuario);

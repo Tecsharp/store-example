@@ -12,5 +12,12 @@ public interface ProductosRpository {
 	
 	public boolean agregarProductoAlCarrito(Integer producto, Integer usuario);
 	
+	//public Producto getCarrito (Usuario usuario);
+
+	List<Producto> getProductos(Usuario usuario);
+
+	
+
+	//Integer verCarrito(Integer idUser);
 	
 }

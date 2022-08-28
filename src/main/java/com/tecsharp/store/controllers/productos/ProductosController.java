@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.tecsharp.store.StoreMain;
 import com.tecsharp.store.entity.productos.Producto;
 import com.tecsharp.store.entity.productos.TipoProducto;
 import com.tecsharp.store.entity.usuarios.Usuario;
@@ -98,16 +99,74 @@ public class ProductosController {
 
 		return false;
 	}
-	
+
 	public boolean validarAgregarCarrito(boolean enCarrito) {
-				
-		if(enCarrito = true) {
+
+		if (enCarrito = true) {
 			System.out.println("El producto se agrego correctamente xd");
 		} else {
 			System.out.println("El producto no se agrego al carrito. Intenta de nuevo.");
 		}
 		return enCarrito;
-		
+
 	}
+
+	public List<Producto> verCarrito (Usuario usuario) {
+
+		
+		Integer option = null;
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("0. Ver carrito");
+		option = sc.nextInt();
+		
+		if(option == 0) {
+			
+			Integer idProducto = null;
+			Producto producto = null;
+			while (producto == null) {
+				
+				System.out.println("Carrito de " + usuario.getNameUser());
+				ProductosServiceImpl service = new ProductosServiceImpl();
+				List<Producto> productos = service.verCarrito(usuario);
+
+				int i = 1;
+				for (Producto productos1 : productos) {
+					System.out.println(i++ + ": ".concat(productos1.getName()));
+				}
+				
+				System.out.println("Presiona: ");
+				System.out.println("1. Comprar");
+				System.out.println("2. Cancelar");
+				
+				option = sc.nextInt();
+				if(option == 1) {
+					System.out.println("Pedido comprado");
+				} else {
+					System.out.println("Pedido cancelado");
+					TipoProductosController tipoProductos = new TipoProductosController();
+					TipoProducto tipoProducto = tipoProductos.getTypeProductID(usuario);
+				}
+				
+				//idProducto = sc.nextInt();
+				//Producto productoRecuperado = productos.get(idProducto - 1);
+				//productos = service.validaProductoID(productoRecuperado.getIdProduct(), productos); // Envia entero y lista
+																									// productos
+
+				Utilidad.clearScreen();
+
+			}
+			
+			
+			
+			
+		} else {
+			
+		}
+		return null;
+
+	}
+	
+
 
 }

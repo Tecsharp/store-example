@@ -16,8 +16,8 @@ public interface ProductosService {
 	
 	public boolean agregarCarritoByIdUser (Integer productoID, Integer idUser);
 	
-	//public boolean validaProductoCarritoAgregado ();
-
 	public boolean validaProductoCarritoAgregado(boolean enCarrito);
+	
+	public List<Producto> verCarrito(Usuario usuario);
 	
 }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.tecsharp.store.entity.productos.Producto;
+import com.tecsharp.store.entity.usuarios.Usuario;
 import com.tecsharp.store.repository.productos.ProductosRpository;
 import com.tecsharp.store.service.productos.impl.ProductosServiceImpl;
 import com.tecsharp.store.utils.Constantes;
@@ -86,6 +87,42 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 
 		
 		return service.validaProductoCarritoAgregado(enCarrito) ;
+	}
+
+	@Override
+	public List<Producto> getProductos(Usuario usuario) {
+		List<Producto> carrito = new ArrayList<>();
+		
+		Integer idUser = usuario.getIdUser();
+		
+		String query = "SELECT * FROM products INNER JOIN cart ON  cart.id_product = products.id_product WHERE id_user = ?";
+
+		try (Connection connection = DriverManager.getConnection(Constantes.DB_PROPERTIES);
+				PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setInt(1, idUser);
+
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()) {
+				Producto producto = new Producto();
+				producto.setIdProduct(result.getInt("id_product"));
+				producto.setName(result.getString("name"));
+				producto.setStock(result.getInt("stock"));
+				producto.setPrice(result.getDouble("price"));
+				producto.setDescription(result.getString("description"));
+				producto.setDateCreate(result.getDate("date_Create"));
+				producto.setDateUpdate(result.getDate("date_update"));
+				carrito.add(producto);
+				
+				//System.out.println(producto);
+			}
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return carrito;
 	}
 
 }
