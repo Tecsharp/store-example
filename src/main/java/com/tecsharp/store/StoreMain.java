@@ -29,12 +29,15 @@ public class StoreMain {
 
 			ProductosController productos = new ProductosController();
 			Producto producto = productos.getProductos(tipoProducto);
-
-			productos.mostrarArticuloSeleccionado(producto, tipoProducto);
-
-			// ProductosServiceImpl productoService = new ProductosServiceImpl();
-
-			productos.agregarAlCarritoVista(producto, usuario);
+			ProductosServiceImpl service = new ProductosServiceImpl();
+			
+			if(productos.mostrarArticuloSeleccionado(producto, tipoProducto) != null) {
+				productos.agregarAlCarritoVista(producto, usuario);
+								
+			} else {
+				System.out.println("Regresando al inicio");
+			}
+			
 			
 
 		}

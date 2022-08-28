@@ -13,6 +13,7 @@ import java.util.List;
 
 import com.tecsharp.store.entity.productos.Producto;
 import com.tecsharp.store.repository.productos.ProductosRpository;
+import com.tecsharp.store.service.productos.impl.ProductosServiceImpl;
 import com.tecsharp.store.utils.Constantes;
 
 public class ProductosRepositoryImpl implements ProductosRpository {
@@ -50,14 +51,16 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 	}
 
 	@Override
-	public Producto agregarProductoAlCarrito(Integer productoID, Integer idUser) {
+	public boolean agregarProductoAlCarrito(Integer productoID, Integer idUser) {
 		
+		ProductosServiceImpl service = new ProductosServiceImpl();
+			
 	    LocalDateTime fecha = LocalDateTime.now();
 	    DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	    String fechaFormateada = fecha.format(myFormatObj);
 		
 		String query = "INSERT INTO cart VALUES (0,1,1,?,?,1,?,?);";
-
+		boolean enCarrito = false;
 		try (Connection connection = DriverManager.getConnection(Constantes.DB_PROPERTIES);
 				PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -66,18 +69,23 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 			statement.setString(2, fechaFormateada);
 			statement.setInt(3, idUser);
 			statement.setInt(4, productoID);
-			statement.executeUpdate();
-			
+					
+			if(statement.executeUpdate() == 1) {
+				enCarrito = true;
+			} else {
+				System.out.println("No se pudo agregar al carrito");
+				enCarrito = false;
+			}
 
 		}
 
 		catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return false;
 		}
 
-		Producto isProducto = null;
-		return isProducto ;
+		
+		return service.validaProductoCarritoAgregado(enCarrito) ;
 	}
 
 }

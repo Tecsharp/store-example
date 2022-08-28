@@ -2,6 +2,7 @@ package com.tecsharp.store.service.productos.impl;
 
 import java.util.List;
 
+import com.tecsharp.store.controllers.productos.ProductosController;
 import com.tecsharp.store.entity.productos.Producto;
 import com.tecsharp.store.entity.productos.TipoProducto;
 import com.tecsharp.store.entity.usuarios.Usuario;
@@ -27,18 +28,17 @@ public class ProductosServiceImpl implements ProductosService{
 	}
 
 	@Override
-	public Producto agregarCarritoByIdUser(Integer productoID, Integer idUser) {
+	public boolean agregarCarritoByIdUser(Integer productoID, Integer idUser) {
 	
 		ProductosRepositoryImpl carritoData = new ProductosRepositoryImpl();
 		return carritoData.agregarProductoAlCarrito(productoID, idUser);
 	}
 
 	@Override
-	public boolean validaProductoCarritoAgregado() {
+	public boolean validaProductoCarritoAgregado(boolean enCarrito) {
+		ProductosController productoController = new ProductosController();
 		
-		
-		
-		return true;
+		return productoController.validarAgregarCarrito(enCarrito);
 	}
 
 

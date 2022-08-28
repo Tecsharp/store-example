@@ -14,10 +14,10 @@ public interface ProductosService {
 	
 	public Producto validaProductoID(Integer productoID, List<Producto>productos);
 	
-	public Producto agregarCarritoByIdUser (Integer productoID, Integer idUser);
+	public boolean agregarCarritoByIdUser (Integer productoID, Integer idUser);
 	
 	//public boolean validaProductoCarritoAgregado ();
 
-	public boolean validaProductoCarritoAgregado();
+	public boolean validaProductoCarritoAgregado(boolean enCarrito);
 	
 }

@@ -58,6 +58,7 @@ public class ProductosController {
 			System.out.println("Caracteristicas: " + producto.getDescription());
 
 			System.out.println("Presiona 1 para agregar al carrito");
+			System.out.println("Presiona cualquier tecla para regresar");
 			agregarOpcion = sc.nextInt();
 			if (agregarOpcion == 1) {
 
@@ -70,7 +71,7 @@ public class ProductosController {
 
 	}
 
-	public Producto agregarAlCarritoVista(Producto producto, Usuario usuario) {
+	public boolean agregarAlCarritoVista(Producto producto, Usuario usuario) {
 		Scanner sc = new Scanner(System.in);
 		Integer agregarOpcion = null;
 		while (agregarOpcion == null) {
@@ -82,19 +83,31 @@ public class ProductosController {
 
 			System.out.println("Has agregado: " + productoNombre + " al carrito.");
 
-			System.out.println("Presiona 1 para continuar");
+			System.out.println("Presiona 1 para confirmar");
+			System.out.println("Presiona cualquier tecla para rechazar");
 			agregarOpcion = sc.nextInt();
 
 			if (agregarOpcion == 1) {
 				return carritoData.agregarCarritoByIdUser(productoID, idUser);
 			} else {
-				return null;
+				System.out.println("Regresando al inicio");
+				return false;
 			}
 
 		}
 
-		return null;
-
+		return false;
+	}
+	
+	public boolean validarAgregarCarrito(boolean enCarrito) {
+				
+		if(enCarrito = true) {
+			System.out.println("El producto se agrego correctamente xd");
+		} else {
+			System.out.println("El producto no se agrego al carrito. Intenta de nuevo.");
+		}
+		return enCarrito;
+		
 	}
 
 }
