@@ -34,10 +34,10 @@ public class ProductosServiceImpl implements ProductosService{
 		return carritoData.agregarProductoAlCarrito(productoID, idUser);
 	}
 
+	
 	@Override
 	public boolean validaProductoCarritoAgregado(boolean enCarrito) {
 		ProductosController productoController = new ProductosController();
-		
 		return productoController.validarAgregarCarrito(enCarrito);
 	}
 
