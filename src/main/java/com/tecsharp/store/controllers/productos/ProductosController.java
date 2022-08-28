@@ -143,7 +143,7 @@ public class ProductosController {
 				if(option == 1) {
 					System.out.println("Pedido comprado");
 				} else {
-					System.out.println("Pedido cancelado");
+					System.out.println("Compra cancelado");
 					TipoProductosController tipoProductos = new TipoProductosController();
 					TipoProducto tipoProducto = tipoProductos.getTypeProductID(usuario);
 				}
