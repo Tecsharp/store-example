@@ -19,5 +19,9 @@ public interface ProductosService {
 	public boolean validaProductoCarritoAgregado(boolean enCarrito);
 	
 	public List<Producto> verCarrito(Usuario usuario);
+
+	public List<Producto> comprarCarrito(List<Producto> productos, Usuario usuario, Integer numItems); 
+
+	public Integer validarNumeroItems (List<Producto> productos, Usuario usuario);
 	
 }

@@ -45,8 +45,20 @@ public class ProductosServiceImpl implements ProductosService{
 	public List<Producto> verCarrito(Usuario usuario) {
 		ProductosRepositoryImpl carrito = new ProductosRepositoryImpl();
 		
-		return carrito.getProductos(usuario);
+		return carrito.getCarrito(usuario);
 				
+	}
+
+	@Override
+	public List<Producto> comprarCarrito(List<Producto> productos, Usuario usuario, Integer numItems) {
+		ProductosRepositoryImpl producto = new ProductosRepositoryImpl();
+		return producto.comprarCarrito(productos, usuario, numItems);
+	}
+
+	@Override
+	public Integer validarNumeroItems(List<Producto> productos, Usuario usuario) {
+		ProductosRepositoryImpl producto = new ProductosRepositoryImpl();
+		return producto.validarNumeroItems(productos, usuario);
 	}
 
 

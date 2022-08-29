@@ -8,6 +8,7 @@ import com.tecsharp.store.StoreMain;
 import com.tecsharp.store.entity.productos.Producto;
 import com.tecsharp.store.entity.productos.TipoProducto;
 import com.tecsharp.store.entity.usuarios.Usuario;
+import com.tecsharp.store.repository.productos.impl.ProductosRepositoryImpl;
 import com.tecsharp.store.service.productos.impl.ProductosServiceImpl;
 import com.tecsharp.store.service.users.impl.UsuariosServiceImpl;
 import com.tecsharp.store.utils.Utilidad;
@@ -52,13 +53,13 @@ public class ProductosController {
 		Integer agregarOpcion = null;
 		while (agregarOpcion == null) {
 
-			System.out.println("ARTICULO SELECCIONADO:");
+			System.out.println("ARTICULO SELECCIONADO:\n");
 			System.out.println("Nombre: " + producto.getName());
 			System.out.println("Stock disponible: " + producto.getStock());
 			System.out.println("Precio: " + producto.getPrice());
 			System.out.println("Caracteristicas: " + producto.getDescription());
-
-			System.out.println("Presiona 1 para agregar al carrito");
+			System.out.println("");
+			System.out.println("1. Agregar al carrito");
 			System.out.println("Presiona cualquier tecla para regresar");
 			agregarOpcion = sc.nextInt();
 			if (agregarOpcion == 1) {
@@ -111,62 +112,51 @@ public class ProductosController {
 
 	}
 
-	public List<Producto> verCarrito (Usuario usuario) {
+	public void verCarrito(Usuario usuario) {
 
-		
 		Integer option = null;
-		
+
 		Scanner sc = new Scanner(System.in);
-		System.out.println("0. Ver carrito");
-		option = sc.nextInt();
-		
-		if(option == 0) {
+
+		Integer idProducto = null;
+		Producto producto = null;
+		boolean onCart = true;
+		while (onCart) {
+
+			System.out.println("Carrito de " + usuario.getNameUser());
 			
-			Integer idProducto = null;
-			Producto producto = null;
-			while (producto == null) {
-				
-				System.out.println("Carrito de " + usuario.getNameUser());
-				ProductosServiceImpl service = new ProductosServiceImpl();
-				List<Producto> productos = service.verCarrito(usuario);
+			ProductosServiceImpl service = new ProductosServiceImpl();
+			
+			List<Producto> productos = service.verCarrito(usuario);
 
-				int i = 1;
-				for (Producto productos1 : productos) {
-					System.out.println(i++ + ": ".concat(productos1.getName()));
-				}
-				
-				System.out.println("Presiona: ");
-				System.out.println("1. Comprar");
-				System.out.println("2. Cancelar");
-				
-				option = sc.nextInt();
-				if(option == 1) {
-					System.out.println("Pedido comprado");
-				} else {
-					System.out.println("Compra cancelado");
-					TipoProductosController tipoProductos = new TipoProductosController();
-					TipoProducto tipoProducto = tipoProductos.getTypeProductID(usuario);
-				}
-				
-				//idProducto = sc.nextInt();
-				//Producto productoRecuperado = productos.get(idProducto - 1);
-				//productos = service.validaProductoID(productoRecuperado.getIdProduct(), productos); // Envia entero y lista
-																									// productos
-
-				Utilidad.clearScreen();
-
+			int numItems = 1;
+			for (Producto productos1 : productos) {
+				System.out.println(numItems++ + ": ".concat(productos1.getName()));
 			}
-			
-			
-			
-			
-		} else {
-			
+
+			System.out.println("");
+			System.out.println("1. Comprar carrito");
+			System.out.println("2. Cancelar");
+
+			option = sc.nextInt();
+			if (option == 1) {
+				
+				service.comprarCarrito(productos, usuario, numItems-1);
+				
+			} else {
+
+				System.out.println("Compra cancelado");
+				onCart = false;
+			}
+
+			// idProducto = sc.nextInt();
+			// Producto productoRecuperado = productos.get(idProducto - 1);
+			// productos = service.validaProductoID(productoRecuperado.getIdProduct(),
+			// productos); // Envia entero y lista
+			// productos
+			Utilidad.clearScreen();
 		}
-		return null;
 
 	}
-	
-
 
 }

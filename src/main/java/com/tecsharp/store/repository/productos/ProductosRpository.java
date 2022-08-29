@@ -14,9 +14,13 @@ public interface ProductosRpository {
 	
 	//public Producto getCarrito (Usuario usuario);
 
-	List<Producto> getProductos(Usuario usuario);
+	//List<Producto> getProductos(Usuario usuario);
 
+	public List<Producto> comprarCarrito(List<Producto>productos, Usuario usuario, Integer numItems);
+
+	List<Producto> getCarrito(Usuario usuario);
 	
+	public Integer validarNumeroItems (List<Producto> productos, Usuario usuario);
 
 	//Integer verCarrito(Integer idUser);
 	

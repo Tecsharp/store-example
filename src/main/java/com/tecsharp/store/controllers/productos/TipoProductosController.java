@@ -19,21 +19,23 @@ public class TipoProductosController {
 		while (tipoProducto == null) {
 
 			Scanner sc = new Scanner(System.in);
-			System.out.println("SELECCIONA UN TIPO DE PRODUCTO");
+			System.out.println("SELECCIONA UN TIPO DE PRODUCTO\n");
 			TipoProductosServiceImpl service = new TipoProductosServiceImpl();
 			List<TipoProducto> tipoProductos = service.getTipoProductos();
 
 			for (TipoProducto tipoProducto1 : tipoProductos) {
 				System.out.println(tipoProducto1.getIdProductType() + ": ".concat(tipoProducto1.getName()));
 			}
-			
+
+			System.out.println("");
 			ProductosController verCarrito = new ProductosController();
-			
-			verCarrito.verCarrito(usuario);
-					
-			
+			System.out.println("0. Ver carrito");
 			idTipoProducto = sc.nextInt();
-			
+
+			if (idTipoProducto == 0) {
+				verCarrito.verCarrito(usuario);
+			}
+
 			tipoProducto = service.validaTipoProductoID(idTipoProducto, tipoProductos);
 			Utilidad.clearScreen();
 
