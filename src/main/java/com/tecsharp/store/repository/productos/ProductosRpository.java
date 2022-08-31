@@ -10,17 +10,19 @@ public interface ProductosRpository {
 	
 	List<Producto> getProductos(Integer tipoProductoID);
 	
-	public boolean agregarProductoAlCarrito(Integer producto, Integer usuario);
+	public boolean agregarProductoAlCarrito(Integer producto, Integer usuario, Integer numItems);
 	
 	//public Producto getCarrito (Usuario usuario);
 
 	//List<Producto> getProductos(Usuario usuario);
 
-	public List<Producto> comprarCarrito(List<Producto>productos, Usuario usuario, Integer numItems);
+	public List<Producto> comprarCarrito(List<Producto>productos, Usuario usuario);
 
 	List<Producto> getCarrito(Usuario usuario);
 	
 	public Integer validarNumeroItems (List<Producto> productos, Usuario usuario);
+
+	
 
 	//Integer verCarrito(Integer idUser);
 	

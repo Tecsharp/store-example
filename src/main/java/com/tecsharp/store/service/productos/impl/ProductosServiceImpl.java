@@ -28,10 +28,10 @@ public class ProductosServiceImpl implements ProductosService{
 	}
 
 	@Override
-	public boolean agregarCarritoByIdUser(Integer productoID, Integer idUser) {
+	public boolean agregarCarritoByIdUser(Integer productoID, Integer idUser, Integer numItems) {
 	
 		ProductosRepositoryImpl carritoData = new ProductosRepositoryImpl();
-		return carritoData.agregarProductoAlCarrito(productoID, idUser);
+		return carritoData.agregarProductoAlCarrito(productoID, idUser, numItems);
 	}
 
 	
@@ -50,9 +50,9 @@ public class ProductosServiceImpl implements ProductosService{
 	}
 
 	@Override
-	public List<Producto> comprarCarrito(List<Producto> productos, Usuario usuario, Integer numItems) {
+	public List<Producto> comprarCarrito(List<Producto> productos, Usuario usuario) {
 		ProductosRepositoryImpl producto = new ProductosRepositoryImpl();
-		return producto.comprarCarrito(productos, usuario, numItems);
+		return producto.comprarCarrito(productos, usuario);
 	}
 
 	@Override

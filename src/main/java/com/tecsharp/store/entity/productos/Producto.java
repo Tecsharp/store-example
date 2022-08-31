@@ -15,9 +15,12 @@ public class Producto {
 	private Double price;
 	private TipoProducto productType;
 	private String description;
+	private Integer numItems;
 	private Integer userCreate;
 	private Integer userUpdate;
 	private Date dateCreate;
 	private Date dateUpdate;
-	private EnumEstatus status;
+	private Integer status;
+	
+	
 }

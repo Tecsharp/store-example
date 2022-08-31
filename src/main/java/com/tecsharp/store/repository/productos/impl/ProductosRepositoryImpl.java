@@ -55,7 +55,9 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 	}
 
 	@Override
-	public boolean agregarProductoAlCarrito(Integer productoID, Integer idUser) {
+	public boolean agregarProductoAlCarrito(Integer productoID, Integer idUser, Integer numItems) {
+		
+		
 
 		ProductosServiceImpl service = new ProductosServiceImpl();
 
@@ -63,7 +65,7 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 		DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String fechaFormateada = fecha.format(myFormatObj);
 
-		String query = "INSERT INTO cart VALUES (0,1,1,?,?,1,?,?)";
+		String query = "INSERT INTO cart VALUES (0,1,1,?,?,1,?,?,?)";
 		boolean enCarrito = false;
 		try (Connection connection = DriverManager.getConnection(Constantes.DB_PROPERTIES);
 				PreparedStatement statement = connection.prepareStatement(query)) {
@@ -72,8 +74,9 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 
 			statement.setString(1, fechaFormateada);
 			statement.setString(2, fechaFormateada);
-			statement.setInt(3, idUser);
-			statement.setInt(4, productoID);
+			statement.setInt(3, numItems);
+			statement.setInt(4, idUser);
+			statement.setInt(5, productoID);
 			statement.executeUpdate();
 
 		}
@@ -109,6 +112,8 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 				producto.setDescription(result.getString("description"));
 				producto.setDateCreate(result.getDate("date_Create"));
 				producto.setDateUpdate(result.getDate("date_update"));
+				producto.setNumItems(result.getInt("num_items"));
+				producto.setStatus(result.getInt("id_status"));
 				carrito.add(producto);
 
 				// System.out.println(producto);
@@ -123,7 +128,7 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 	}
 
 	@Override
-	public List<Producto> comprarCarrito(List<Producto> productos, Usuario usuario, Integer numItems) {
+	public List<Producto> comprarCarrito(List<Producto> productos, Usuario usuario) {
 
 		System.out.println("Seleccionando idSale");
 		// List<Producto> productos = new ArrayList<>();
@@ -151,10 +156,13 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 
 		Integer idUser = usuario.getIdUser();
 		Integer idProduct = null;
+		Integer numItems = null;
 		idSale = idSale + 1;
+		
 
 		for (Producto producto : productos) {
 			idProduct = producto.getIdProduct();
+			numItems = producto.getNumItems();
 			System.out.println("REALIZANDO INSERT");
 			System.out.println("LOGS");
 			System.out.println("idUser: " + idUser);
@@ -162,7 +170,8 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 			System.out.println("userCreate: " + idUser);
 			System.out.println("userUpdate: " + idUser);
 			System.out.println("idProduct: " + idProduct); // log
-
+			System.out.println("numItems: " + numItems);
+			
 			LocalDateTime fecha = LocalDateTime.now();
 			DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			String fechaFormateada = fecha.format(myFormatObj);
@@ -175,20 +184,23 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 				statement.setInt(1, idSale); // Correcto
 				statement.setInt(2, idUser); // Correcto
 				statement.setInt(3, idProduct);
-				statement.setInt(4, 1);
+				statement.setInt(4, numItems);
 				statement.setInt(5, idUser);
 				statement.setInt(6, idUser);
 				statement.setString(7, fechaFormateada);
 				statement.setString(8, fechaFormateada);
+				
 				statement.executeUpdate();
 
 			}
+			
 
 			catch (Exception e) {
 				e.printStackTrace();
 				return null;
 			}
-
+			
+			
 		}
 
 		return productos;
