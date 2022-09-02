@@ -50,8 +50,10 @@ public class ProductosServiceImpl implements ProductosService{
 	}
 
 	@Override
-	public List<Producto> comprarCarrito(List<Producto> productos, Usuario usuario) {
+	public boolean comprarCarrito(List<Producto> productos, Usuario usuario) {
 		ProductosRepositoryImpl producto = new ProductosRepositoryImpl();
+
+		
 		return producto.comprarCarrito(productos, usuario);
 	}
 

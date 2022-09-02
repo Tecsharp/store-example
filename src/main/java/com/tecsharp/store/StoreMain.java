@@ -11,8 +11,9 @@ import com.tecsharp.store.repository.productos.impl.TipoProductosRepositoryImpl;
 import com.tecsharp.store.service.productos.impl.ProductosServiceImpl;
 
 public class StoreMain {
-
+ 
 	public static void main(String[] args) {
+		
 		System.out.println("========================");
 		System.out.println("BIENVENIDO A MI TIENDITA");
 		System.out.println("========================");

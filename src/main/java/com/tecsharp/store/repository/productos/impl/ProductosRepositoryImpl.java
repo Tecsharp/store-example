@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.tecsharp.store.entity.productos.Producto;
+import com.tecsharp.store.entity.productos.TipoProducto;
 import com.tecsharp.store.entity.usuarios.Usuario;
 import com.tecsharp.store.repository.productos.ProductosRpository;
 import com.tecsharp.store.service.productos.impl.ProductosServiceImpl;
@@ -56,8 +57,6 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 
 	@Override
 	public boolean agregarProductoAlCarrito(Integer productoID, Integer idUser, Integer numItems) {
-		
-		
 
 		ProductosServiceImpl service = new ProductosServiceImpl();
 
@@ -128,9 +127,10 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 	}
 
 	@Override
-	public List<Producto> comprarCarrito(List<Producto> productos, Usuario usuario) {
+	public boolean comprarCarrito(List<Producto> productos, Usuario usuario) {
+		boolean ventaHecha = false;
 
-		System.out.println("Seleccionando idSale");
+		// System.out.println("Seleccionando idSale");
 		// List<Producto> productos = new ArrayList<>();
 
 		Integer idSale = null;
@@ -154,24 +154,15 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 		int idProducto = 0;
 		Producto idProductoRecuperado = productos.get(idProducto);
 
-		Integer idUser = usuario.getIdUser();
+		// Integer idUser = usuario.getIdUser();
 		Integer idProduct = null;
 		Integer numItems = null;
 		idSale = idSale + 1;
-		
 
 		for (Producto producto : productos) {
-			idProduct = producto.getIdProduct();
-			numItems = producto.getNumItems();
-			System.out.println("REALIZANDO INSERT");
-			System.out.println("LOGS");
-			System.out.println("idUser: " + idUser);
-			System.out.println("idSale: " + idSale); // log
-			System.out.println("userCreate: " + idUser);
-			System.out.println("userUpdate: " + idUser);
-			System.out.println("idProduct: " + idProduct); // log
-			System.out.println("numItems: " + numItems);
-			
+			// idProduct = producto.getIdProduct();
+			// numItems = producto.getNumItems();
+
 			LocalDateTime fecha = LocalDateTime.now();
 			DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			String fechaFormateada = fecha.format(myFormatObj);
@@ -182,28 +173,29 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 					PreparedStatement statement = connection.prepareStatement(query)) {
 
 				statement.setInt(1, idSale); // Correcto
-				statement.setInt(2, idUser); // Correcto
-				statement.setInt(3, idProduct);
-				statement.setInt(4, numItems);
-				statement.setInt(5, idUser);
-				statement.setInt(6, idUser);
+				statement.setInt(2, usuario.getIdUser()); // Correcto
+				statement.setInt(3, producto.getIdProduct());
+				statement.setInt(4, producto.getNumItems());
+				statement.setInt(5, usuario.getIdUser());
+				statement.setInt(6, usuario.getIdUser());
 				statement.setString(7, fechaFormateada);
 				statement.setString(8, fechaFormateada);
-				
 				statement.executeUpdate();
 
+				ventaHecha = true;
+
 			}
-			
 
 			catch (Exception e) {
 				e.printStackTrace();
-				return null;
+				return ventaHecha == false;
 			}
-			
-			
+
 		}
 
-		return productos;
+		limpiarCarrito(usuario);
+		reducirStockPorCompra(productos);
+		return ventaHecha;
 
 	}
 
@@ -214,10 +206,9 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 		Integer numCountProduct = null;
 
 		for (Producto producto : carrito) {
-			
-			
+
 			idProduct = producto.getIdProduct();
-			
+
 			String query = "SELECT COUNT(id_product) FROM cart WHERE id_product = ?";
 
 			try (Connection connection = DriverManager.getConnection(Constantes.DB_PROPERTIES);
@@ -230,7 +221,6 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 				while (result.next()) {
 
 					numCountProduct = result.getInt("COUNT(id_product)");
-					
 
 					// System.out.println(producto);
 				}
@@ -239,14 +229,96 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 			catch (Exception e) {
 				e.printStackTrace();
 			}
-			
-			//System.out.println("Nombre del producto: " + producto.getName());
-			//System.out.println("ID del producto: " + idProduct);
+
+			// System.out.println("Nombre del producto: " + producto.getName());
+			// System.out.println("ID del producto: " + idProduct);
 			System.out.println("Numero de veces en carrito: " + numCountProduct);
 		}
 
 		return null;
 
 	}
+
+	@Override
+	public boolean limpiarCarrito(Usuario usuario) {
+
+		Integer idUser = usuario.getIdUser();
+		String query = "DELETE FROM cart WHERE id_user = ?;";
+		boolean enCarrito = false;
+		try (Connection connection = DriverManager.getConnection(Constantes.DB_PROPERTIES);
+				PreparedStatement statement = connection.prepareStatement(query)) {
+
+			statement.setInt(1, idUser); // Correcto
+
+			statement.executeUpdate();
+
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean reducirStockPorCompra(List<Producto> productos) {
+
+		String productName = null;
+		Integer productID = null;
+		Integer stockRestante = null;
+
+		for (Producto producto : productos) {
+
+			productName = producto.getName();
+			productID = producto.getIdProduct();
+
+			// OBTIENE EL STOCK DEL PRODUCTO
+			String query = "SELECT stock FROM products WHERE id_product = ?";
+			try (Connection connection = DriverManager.getConnection(Constantes.DB_PROPERTIES);
+					PreparedStatement statement = connection.prepareStatement(query)) {
+
+				statement.setInt(1, productID); // Correcto
+
+				ResultSet result = statement.executeQuery();
+
+				while (result.next()) {
+
+					stockRestante = result.getInt("stock");
+
+					// System.out.println(producto);
+				}
+
+			}
+
+			catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+
+			Integer items = producto.getNumItems();
+			// ACTUALIZA EL STOCK
+			String query2 = "UPDATE products SET stock = ? WHERE id_product = ?";
+			try (Connection connection = DriverManager.getConnection(Constantes.DB_PROPERTIES);
+					PreparedStatement statement = connection.prepareStatement(query2)) {
+
+				statement.setInt(1, stockRestante -items);
+				statement.setInt(2, productID); // Correcto
+				statement.executeUpdate();
+				
+			}
+
+			catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+
+		}
+
+		return false;
+	}
+
+
 
 }

@@ -32,10 +32,11 @@ public class ProductosController {
 			int i = 1;
 			for (Producto productos1 : productos) {
 
-				if (productos1.getStock() > 0 || productos1.getStatus() == 1) {
+				if (productos1.getStock() >= 0 || productos1.getStatus() == 1) {
 					dispStock = "  |=| Stock disponible: " + productos1.getStock();
-				} else {
-					dispStock = "  |=| Stock no disponible: " + productos1.getStock();
+					if (productos1.getStock() == 0) {
+						dispStock = "  |=| Stock no disponible: ";
+					}
 				}
 
 				System.out.println(i++ + ": ".concat(productos1.getName()).concat(dispStock));
@@ -93,7 +94,7 @@ public class ProductosController {
 			String productoNombre = producto.getName();
 			Integer productoID = producto.getIdProduct();
 			Integer idUser = usuario.getIdUser();
-			
+
 			boolean validStock = false;
 			while (!validStock) {
 				System.out.println("Has seleccionado: " + productoNombre + ".");
@@ -149,7 +150,8 @@ public class ProductosController {
 
 			List<Producto> productos = service.verCarrito(usuario);
 
-			int numList = 1;
+			Integer numList = 1;
+			Integer carritoVacio = 0;
 			String isDisponible = null;
 			for (Producto productos1 : productos) {
 
@@ -159,8 +161,13 @@ public class ProductosController {
 					isDisponible = "|=| Art. no disponible";
 				}
 
+				carritoVacio++;
 				System.out.println(numList++ + ": ".concat(productos1.getName()) + " (" + productos1.getNumItems()
 						+ ")  " + isDisponible);
+			}
+
+			if (carritoVacio < 1) {
+				System.out.println("El carrito esta vacio");
 			}
 
 			System.out.println("");
@@ -169,8 +176,23 @@ public class ProductosController {
 
 			option = sc.nextInt();
 			if (option == 1) {
-
-				service.comprarCarrito(productos, usuario);
+				option = null;
+				System.out.println("Presiona 1 para confirmar compra\n2. Cancelar");
+				option = sc.nextInt();
+				if (option == 1) {
+					if (service.comprarCarrito(productos, usuario)) {
+						System.out.println("GRACIAS POR TU COMPRA");
+						System.out.println("PRESIONA ENTER PARA CONTINUAR");
+						try {
+							System.in.read();
+						} catch (Exception e) {
+						}
+					} else {
+						System.out.println("TU COMPRA HA FALLADO");
+					}
+				} else {
+					onCart = false;
+				}
 
 			} else {
 

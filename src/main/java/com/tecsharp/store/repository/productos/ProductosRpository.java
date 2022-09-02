@@ -16,13 +16,15 @@ public interface ProductosRpository {
 
 	//List<Producto> getProductos(Usuario usuario);
 
-	public List<Producto> comprarCarrito(List<Producto>productos, Usuario usuario);
+	public boolean comprarCarrito(List<Producto>productos, Usuario usuario);
 
 	List<Producto> getCarrito(Usuario usuario);
 	
 	public Integer validarNumeroItems (List<Producto> productos, Usuario usuario);
 
+	public boolean limpiarCarrito (Usuario usuario);
 	
+	public boolean reducirStockPorCompra (List<Producto> productos);
 
 	//Integer verCarrito(Integer idUser);
 	

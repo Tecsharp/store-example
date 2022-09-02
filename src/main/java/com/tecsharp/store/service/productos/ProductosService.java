@@ -20,7 +20,7 @@ public interface ProductosService {
 	
 	public List<Producto> verCarrito(Usuario usuario);
 
-	public List<Producto> comprarCarrito(List<Producto> productos, Usuario usuario); 
+	public boolean comprarCarrito(List<Producto> productos, Usuario usuario); 
 
 	public Integer validarNumeroItems (List<Producto> productos, Usuario usuario);
 
