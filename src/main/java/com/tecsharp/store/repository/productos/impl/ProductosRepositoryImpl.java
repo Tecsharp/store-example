@@ -1,21 +1,20 @@
 package com.tecsharp.store.repository.productos.impl;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+
+
 import java.util.List;
-import java.util.Map;
+
 
 import com.tecsharp.store.entity.productos.Producto;
-import com.tecsharp.store.entity.productos.TipoProducto;
+
 import com.tecsharp.store.entity.usuarios.Usuario;
 import com.tecsharp.store.repository.productos.ProductosRpository;
 import com.tecsharp.store.service.productos.impl.ProductosServiceImpl;
@@ -56,38 +55,49 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 	}
 
 	@Override
-	public boolean agregarProductoAlCarrito(Integer productoID, Integer idUser, Integer numItems) {
-
+	public boolean agregarProductoAlCarrito(Integer productoID, Integer idUser, Integer numItems, boolean productoDuplicado) {
 		ProductosServiceImpl service = new ProductosServiceImpl();
-
-		LocalDateTime fecha = LocalDateTime.now();
-		DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		String fechaFormateada = fecha.format(myFormatObj);
-
-		String query = "INSERT INTO cart VALUES (0,1,1,?,?,1,?,?,?)";
+		
 		boolean enCarrito = false;
-		try (Connection connection = DriverManager.getConnection(Constantes.DB_PROPERTIES);
-				PreparedStatement statement = connection.prepareStatement(query)) {
+		if (productoDuplicado == true) {
+			actualizarCarritoPorProductoDuplicado(productoID, idUser, numItems);
+			return service.validaProductoCarritoAgregado(enCarrito);
+		} else {
+			
+			LocalDateTime fecha = LocalDateTime.now();
+			DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			String fechaFormateada = fecha.format(myFormatObj);
 
-			// ResultSet result = statement.executeQuery();
+			String query = "INSERT INTO cart VALUES (0,1,1,?,?,1,?,?,?)";
+			
+			try (Connection connection = DriverManager.getConnection(Constantes.DB_PROPERTIES);
+					PreparedStatement statement = connection.prepareStatement(query)) {
 
-			statement.setString(1, fechaFormateada);
-			statement.setString(2, fechaFormateada);
-			statement.setInt(3, numItems);
-			statement.setInt(4, idUser);
-			statement.setInt(5, productoID);
-			statement.executeUpdate();
+				// ResultSet result = statement.executeQuery();
 
+				statement.setString(1, fechaFormateada);
+				statement.setString(2, fechaFormateada);
+				statement.setInt(3, numItems);
+				statement.setInt(4, idUser);
+				statement.setInt(5, productoID);
+				statement.executeUpdate();
+
+			}
+
+			catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+
+			return service.validaProductoCarritoAgregado(enCarrito);
 		}
-
-		catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-
-		return service.validaProductoCarritoAgregado(enCarrito);
+		
+		
 	}
-
+	
+	
+	
+	
 	@Override
 	public List<Producto> getCarrito(Usuario usuario) {
 		List<Producto> carrito = new ArrayList<>();
@@ -244,7 +254,7 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 
 		Integer idUser = usuario.getIdUser();
 		String query = "DELETE FROM cart WHERE id_user = ?;";
-		boolean enCarrito = false;
+
 		try (Connection connection = DriverManager.getConnection(Constantes.DB_PROPERTIES);
 				PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -318,6 +328,79 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 
 		return false;
 	}
+
+	@Override
+	public void actualizarCarritoPorProductoDuplicado(Integer productoID, Integer idUser, Integer numItems) {
+		
+		Integer nuevoNumItems = null;
+		Integer itemsEnCarrito = null;
+		String query = "SELECT num_items FROM cart WHERE id_product = ? AND id_user = ?";
+		
+		try (Connection connection = DriverManager.getConnection(Constantes.DB_PROPERTIES);
+				PreparedStatement statement = connection.prepareStatement(query)) {
+
+			statement.setInt(1, productoID);
+			statement.setInt(2, idUser);
+			
+			ResultSet result = statement.executeQuery();
+			
+			while (result.next()) {
+
+				itemsEnCarrito = result.getInt("num_items");
+
+				// System.out.println(producto);
+			}
+			
+			//statement.executeUpdate();
+			
+			
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		
+		nuevoNumItems = itemsEnCarrito + numItems;
+		
+		String query2 = "UPDATE cart SET num_items = ? WHERE id_product = ? AND id_user = ?";
+		
+		try (Connection connection = DriverManager.getConnection(Constantes.DB_PROPERTIES);
+				PreparedStatement statement = connection.prepareStatement(query2)) {
+
+			// ResultSet result = statement.executeQuery();
+
+			statement.setInt(1, nuevoNumItems);
+			statement.setInt(2, productoID);
+			statement.setInt(3, idUser);
+			statement.executeUpdate();
+
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		
+	}
+
+//	@Override
+//	public boolean carritoProductoEsIgual(Integer productoID, Usuario usuario, Integer numItems) {
+//		List<Producto> listCarrito = getCarrito(usuario);
+//		
+//		
+//		for (Producto producto : listCarrito) {
+//			
+//			if (producto.getIdProduct() == productoID) {
+//				System.out.println("Producto duplicado");
+//			}
+//			
+//		}
+//		
+//		return false;
+//	}
+
+
 
 
 

@@ -3,7 +3,7 @@ package com.tecsharp.store.controllers.productos;
 import java.util.List;
 import java.util.Scanner;
 
-import com.tecsharp.store.entity.productos.Producto;
+
 import com.tecsharp.store.entity.productos.TipoProducto;
 import com.tecsharp.store.entity.usuarios.Usuario;
 import com.tecsharp.store.service.productos.impl.TipoProductosServiceImpl;

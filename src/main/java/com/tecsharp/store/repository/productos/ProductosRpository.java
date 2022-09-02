@@ -3,14 +3,16 @@ package com.tecsharp.store.repository.productos;
 import java.util.List;
 
 import com.tecsharp.store.entity.productos.Producto;
-import com.tecsharp.store.entity.productos.TipoProducto;
+
 import com.tecsharp.store.entity.usuarios.Usuario;
 
 public interface ProductosRpository {
 	
 	List<Producto> getProductos(Integer tipoProductoID);
 	
-	public boolean agregarProductoAlCarrito(Integer producto, Integer usuario, Integer numItems);
+	public boolean agregarProductoAlCarrito(Integer producto, Integer usuario, Integer numItems, boolean productoDuplicado);
+	
+	public void actualizarCarritoPorProductoDuplicado(Integer productoID, Integer idUser, Integer numItems);
 	
 	//public Producto getCarrito (Usuario usuario);
 
@@ -26,6 +28,9 @@ public interface ProductosRpository {
 	
 	public boolean reducirStockPorCompra (List<Producto> productos);
 
+	
 	//Integer verCarrito(Integer idUser);
+
+	//public boolean carritoProductoEsIgual(Integer productoID, Usuario usuario, Integer numItems);
 	
 }

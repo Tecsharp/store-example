@@ -1,9 +1,6 @@
 package com.tecsharp.store.entity.productos;
 
 import java.util.Date;
-
-import com.tecsharp.store.entity.estatus.EnumEstatus;
-
 import lombok.Data;
 
 @Data

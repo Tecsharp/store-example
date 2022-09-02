@@ -73,6 +73,7 @@ public class ProductosController {
 			System.out.println("1. Seleccionar articulo");
 			System.out.println("Presiona cualquier tecla para regresar");
 			agregarOpcion = sc.nextInt();
+
 			if (agregarOpcion == 1) {
 
 				return producto;
@@ -110,8 +111,15 @@ public class ProductosController {
 			System.out.println("Presiona cualquier tecla para rechazar");
 			agregarOpcion = sc.nextInt();
 
+			boolean productoDuplicado = false;
 			if (agregarOpcion == 1) {
-				return carritoData.agregarCarritoByIdUser(productoID, idUser, numItems);
+
+				if (carritoProductoEsIgual(productoID, usuario, numItems) == true) {
+					productoDuplicado = true;
+					return carritoData.agregarCarritoByIdUser(productoID, idUser, numItems, productoDuplicado);
+				}
+				return carritoData.agregarCarritoByIdUser(productoID, idUser, numItems, productoDuplicado);
+
 			} else {
 				System.out.println("Regresando al inicio");
 				return false;
@@ -120,6 +128,17 @@ public class ProductosController {
 		}
 
 		return false;
+	}
+
+	public boolean carritoProductoEsIgual(Integer productoID, Usuario usuario, Integer numItems) {
+
+		ProductosServiceImpl carritoData = new ProductosServiceImpl();
+		if (carritoData.carritoProductoEsIgual(productoID, usuario, numItems) == true) {
+			return true;
+		}
+
+		return false;
+
 	}
 
 	public boolean validarAgregarCarrito(boolean enCarrito) {

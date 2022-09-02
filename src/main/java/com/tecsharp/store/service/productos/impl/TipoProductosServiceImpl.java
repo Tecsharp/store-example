@@ -1,6 +1,6 @@
 package com.tecsharp.store.service.productos.impl;
 
-import java.util.Iterator;
+
 import java.util.List;
 
 import com.tecsharp.store.entity.productos.TipoProducto;
