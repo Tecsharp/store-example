@@ -138,8 +138,16 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 
 	@Override
 	public boolean comprarCarrito(List<Producto> productos, Usuario usuario) {
+		
 		boolean ventaHecha = false;
-
+		Integer productoStock = 0;
+		for (Producto producto : productos) {
+			productoStock = producto.getStock();
+			if(productoStock == 0) {
+				return false;
+			}
+		}
+		
 		// System.out.println("Seleccionando idSale");
 		// List<Producto> productos = new ArrayList<>();
 
@@ -161,12 +169,12 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 
 		}
 
-		int idProducto = 0;
-		Producto idProductoRecuperado = productos.get(idProducto);
+		
+		
 
 		// Integer idUser = usuario.getIdUser();
-		Integer idProduct = null;
-		Integer numItems = null;
+		//Integer idProduct = null;
+		//Integer numItems = null;
 		idSale = idSale + 1;
 
 		for (Producto producto : productos) {

@@ -1,18 +1,15 @@
 package com.tecsharp.store.controllers.productos;
 
-import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.xml.crypto.dsig.spec.DigestMethodParameterSpec;
-
-import com.tecsharp.store.StoreMain;
 import com.tecsharp.store.entity.productos.Producto;
 import com.tecsharp.store.entity.productos.TipoProducto;
 import com.tecsharp.store.entity.usuarios.Usuario;
 import com.tecsharp.store.repository.productos.impl.ProductosRepositoryImpl;
 import com.tecsharp.store.service.productos.impl.ProductosServiceImpl;
-import com.tecsharp.store.service.users.impl.UsuariosServiceImpl;
+
 import com.tecsharp.store.utils.Utilidad;
 
 public class ProductosController {
@@ -75,7 +72,15 @@ public class ProductosController {
 			agregarOpcion = sc.nextInt();
 
 			if (agregarOpcion == 1) {
-
+				if (producto.getStock() == 0) {
+					System.out.println("PRODUCTO AGOTADO");
+					System.out.println("PRESIONA ENTER PARA CONTINUAR");
+					try {
+						System.in.read();
+					} catch (Exception e) {
+					}
+					return null;
+				}
 				return producto;
 			} else {
 				return null;
@@ -86,7 +91,7 @@ public class ProductosController {
 	}
 
 	public boolean agregarAlCarritoVista(Producto producto, Usuario usuario) {
-		Scanner sc = new Scanner(System.in);
+
 		Integer agregarOpcion = null;
 		Integer numItems = null;
 		while (agregarOpcion == null) {
@@ -98,19 +103,52 @@ public class ProductosController {
 
 			boolean validStock = false;
 			while (!validStock) {
-				System.out.println("Has seleccionado: " + productoNombre + ".");
+				Utilidad.clearScreen();
+				System.out.println("Has seleccionado: " + productoNombre + "." + " (" + producto.getStock() + ")"
+						+ " Unidades disponibles");
 				System.out.println("INGRESE NUMERO DE UNIDADES (SOLO NUMEROS)");
-				numItems = sc.nextInt();
-				if (numItems > producto.getStock()) {
-					System.out.println("NO HAY UNIDADES SUFICIENTES\n?");
-				} else {
-					validStock = true;
-				}
-			}
-			System.out.println("Presiona 1 para confirmar");
-			System.out.println("Presiona cualquier tecla para rechazar");
-			agregarOpcion = sc.nextInt();
 
+				boolean isEntero = false;
+
+				while (!isEntero) { //VALIDA QUE SEA UN ENTERO POSITIVO Y NO UNA LETRA
+					try {
+						Scanner sc = new Scanner(System.in);
+						System.out.println("Ingresa un digito");
+						numItems = sc.nextInt();
+						if (numItems > 0) {
+							isEntero = true;
+						} else {
+						}
+					} catch (Exception e) {
+						isEntero = false;
+						System.out.println("AGREGA UN NUMERO VALIDO");
+					}
+				}
+
+				if (numItems > producto.getStock()) {
+					System.out.println("NO HAY UNIDADES SUFICIENTES\n");
+					System.out.println("PRESIONA ENTER PARA CONTINUAR");
+					try {
+						System.in.read();
+					} catch (Exception e) {
+					}
+				} else if (numItems <= producto.getStock() && numItems > 0) {
+					validStock = true;
+				} else {
+					System.out.println("INRGESA EL DIGITO CORRECTAMENTE");
+					System.out.println("PRESIONA ENTER PARA CONTINUAR");
+					try {
+						System.in.read();
+					} catch (Exception e) {
+					}
+				}
+
+			}
+			System.out.println("Ingresa 1 para confirmar");
+			System.out.println("Presiona cualquier tecla para rechazar");
+			Scanner sc = new Scanner(System.in);
+			agregarOpcion = sc.nextInt();
+			sc.close();
 			boolean productoDuplicado = false;
 			if (agregarOpcion == 1) {
 
@@ -191,7 +229,8 @@ public class ProductosController {
 
 			System.out.println("");
 			System.out.println("1. Comprar carrito");
-			System.out.println("2. Cancelar");
+			System.out.println("2. Limpiar carrito");
+			System.out.println("3. Cancelar");
 
 			option = sc.nextInt();
 			if (option == 1) {
@@ -207,15 +246,23 @@ public class ProductosController {
 						} catch (Exception e) {
 						}
 					} else {
-						System.out.println("TU COMPRA HA FALLADO");
+						System.out.println("TU COMPRA NO HA SIDO EFECTUADA\n");
+						System.out.println("PRESIONA ENTER PARA CONTINUAR");
+						try {
+							System.in.read();
+						} catch (Exception e) {
+						}
 					}
 				} else {
 					onCart = false;
 				}
 
+			} else if (option == 2) {
+				service.limpiarCarrito(usuario);
+
 			} else {
 
-				System.out.println("Compra cancelado");
+				System.out.println("Compra cancelada");
 				onCart = false;
 			}
 

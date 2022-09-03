@@ -5,7 +5,7 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class Usuario {
+public class Usuario extends TipoUsuario {
 	
 	private Integer idUser;
 	private String username;
@@ -13,7 +13,7 @@ public class Usuario {
 	private String lastNameUsr;
 	private String password;
 	private String email;
-	private TipoUsuario userType;
+	private Integer userType;
 	private String description;
 	private Integer userCreate;
 	private Integer userUpdate;

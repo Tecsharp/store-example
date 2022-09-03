@@ -54,6 +54,7 @@ public class UsuariosRepositoryImpl implements UsuariosRpository {
 				usuario.setIdUser(result.getInt("id_user"));
 				usuario.setNameUser(result.getString("name_usr"));
 				usuario.setLastNameUsr(result.getString("lastname_usr"));
+				usuario.setUserType(result.getInt("user_type"));
 				usuario.setUsername(result.getString("username"));
 				usuario.setPassword(result.getString("passwd"));
 				usuario.setEmail(result.getString("emailusr"));

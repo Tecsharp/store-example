@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tecsharp.store.entity.productos.Producto;
 import com.tecsharp.store.entity.productos.TipoProducto;
 import com.tecsharp.store.repository.productos.TipoProductosRepository;
 import com.tecsharp.store.utils.Constantes;
@@ -41,6 +42,13 @@ public class TipoProductosRepositoryImpl implements TipoProductosRepository {
 		}
 
 		return tipoProductos;
+	}
+
+	@Override
+	public Producto crearProducto(Integer tipoProductoID, String name, Integer stock, Double price, String description,
+			Integer idStatus) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

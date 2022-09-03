@@ -28,7 +28,8 @@ public class ProductosServiceImpl implements ProductosService {
 	}
 
 	@Override
-	public boolean agregarCarritoByIdUser(Integer productoID, Integer idUser, Integer numItems, boolean productoDuplicado) {
+	public boolean agregarCarritoByIdUser(Integer productoID, Integer idUser, Integer numItems,
+			boolean productoDuplicado) {
 
 		ProductosRepositoryImpl carritoData = new ProductosRepositoryImpl();
 		return carritoData.agregarProductoAlCarrito(productoID, idUser, numItems, productoDuplicado);
@@ -64,7 +65,7 @@ public class ProductosServiceImpl implements ProductosService {
 	@Override
 	public boolean carritoProductoEsIgual(Integer productoID, Usuario usuario, Integer numItems) {
 		ProductosRepositoryImpl producto = new ProductosRepositoryImpl();
-		
+
 		List<Producto> listCarrito = producto.getCarrito(usuario);
 
 		for (Producto producto1 : listCarrito) {
@@ -73,10 +74,14 @@ public class ProductosServiceImpl implements ProductosService {
 				System.out.println("Producto duplicado");
 				return true;
 			}
-
 		}
-
 		return false;
+	}
+
+	@Override
+	public boolean limpiarCarrito(Usuario usuario) {
+		ProductosRepositoryImpl carrito = new ProductosRepositoryImpl();
+		return carrito.limpiarCarrito(usuario);
 	}
 
 }

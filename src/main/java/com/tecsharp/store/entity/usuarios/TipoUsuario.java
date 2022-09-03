@@ -16,6 +16,6 @@ public class TipoUsuario {
 	private Integer userUpdate;
 	private Date dateCreate;
 	private Date dateUpdate;
-	private EnumEstatus status;
+	private Integer status;
 
 }

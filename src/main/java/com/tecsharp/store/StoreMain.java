@@ -20,6 +20,7 @@ public class StoreMain {
 
 		while (usuario == null) {
 			usuario = usuarios.login();
+			
 		}
 	
 
