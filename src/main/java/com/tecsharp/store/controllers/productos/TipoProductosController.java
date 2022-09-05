@@ -46,7 +46,7 @@ public class TipoProductosController {
 				// UsuariosController usuarios = new UsuariosController();
 
 			} else if (idTipoProducto == 7) {
-				crearProductoVista();
+				crearProductoVista(usuario);
 			}
 
 			tipoProducto = service.validaTipoProductoID(idTipoProducto, tipoProductos);
@@ -57,7 +57,7 @@ public class TipoProductosController {
 		return tipoProducto;
 	}
 
-	public Producto crearProductoVista() {
+	public Producto crearProductoVista(Usuario usuario) {
 
 		TipoProductosServiceImpl service = new TipoProductosServiceImpl();
 		List<TipoProducto> tipoProductos = service.getTipoProductos();
@@ -66,27 +66,38 @@ public class TipoProductosController {
 			System.out.println(tipoProducto1.getIdProductType() + ": ".concat(tipoProducto1.getName()));
 		}
 		
+		
+		Integer tipoProductoID = 0;
+		String name = null;
+		String description = null;
+		Integer stock = null;
+		Double price = null;
+		
+		Integer userID = usuario.getIdUser();
+		
 		Scanner sc = new Scanner(System.in);
 		
-		System.out.println("\nINGRESA EL TIPO DE PRODUCTO A INGRESAR");
-		Integer tipoProductoID = sc.nextInt();
+		System.out.println("INGRESA EL TIPO DE PRODUCTO A INGRESAR");
+		tipoProductoID = sc.nextInt();
 		
-		System.out.println("\nIngresa el nombre del producto");
-		String name = sc.next();
+		System.out.println("Ingresa el nombre del producto");
+		name = sc.next();
 		
-		System.out.println("\nIngresa el stock");
-		Integer stock = sc.nextInt();
+		System.out.println("Ingresa la descripcion");
+		description = sc.next();
 		
-		System.out.println("\nIngresa el precio");
-		Double price = sc.nextDouble();
+		System.out.println("Ingresa el stock");
+		stock = sc.nextInt();
 		
-		System.out.println("\nIngresa la descripcion");
-		String description = sc.next();
+		System.out.println("Ingresa el precio");
+		price = sc.nextDouble();
 		
-		System.out.println("\nIngresa 1 si esta activo o 2 para inactivo");
+		
+		
+		System.out.println("Ingresa 1 si esta activo o 2 para inactivo");
 		Integer idStatus = sc.nextInt();
 		
-		return service.crearProducto(tipoProductoID, name, stock, price, description, idStatus);
+		return service.crearProducto(userID, tipoProductoID, name, stock, price, description, idStatus);
 
 	}
 

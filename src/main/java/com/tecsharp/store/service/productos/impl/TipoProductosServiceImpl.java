@@ -30,9 +30,9 @@ public class TipoProductosServiceImpl implements TipoProductosService {
 	}
 
 	@Override
-	public Producto crearProducto(Integer tipoProductoID, String name, Integer stock, Double price, String description, Integer idStatus) {
+	public Producto crearProducto(Integer userID, Integer tipoProductoID, String name, Integer stock, Double price, String description, Integer idStatus) {
 		TipoProductosRepositoryImpl nuevosProductos = new TipoProductosRepositoryImpl();
-		return nuevosProductos.crearProducto(tipoProductoID, name, stock, price, description, idStatus);
+		return nuevosProductos.crearProducto(userID, tipoProductoID, name, stock, price, description, idStatus);
 	}
 
 }

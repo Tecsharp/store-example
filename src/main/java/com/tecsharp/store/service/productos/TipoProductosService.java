@@ -11,7 +11,7 @@ public interface TipoProductosService {
 	
 	public TipoProducto validaTipoProductoID(Integer idTipoProducto, List<TipoProducto>tipoProductos);
 	
-	public Producto crearProducto (Integer tipoProductoID, String name, Integer stock, Double price, String description, Integer idStatus);
+	public Producto crearProducto (Integer userID, Integer tipoProductoID, String name, Integer stock, Double price, String description, Integer idStatus);
 
 
 }
