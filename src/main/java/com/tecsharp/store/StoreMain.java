@@ -6,6 +6,7 @@ import com.tecsharp.store.controllers.users.UsuariosController;
 import com.tecsharp.store.entity.productos.Producto;
 import com.tecsharp.store.entity.productos.TipoProducto;
 import com.tecsharp.store.entity.usuarios.Usuario;
+import com.tecsharp.store.utils.Utilidad;
 
 public class StoreMain {
  
@@ -40,6 +41,7 @@ public class StoreMain {
 
 			} else {
 				System.out.println("Regresando al inicio");
+				Utilidad.clearScreen();
 			}
 		}
 

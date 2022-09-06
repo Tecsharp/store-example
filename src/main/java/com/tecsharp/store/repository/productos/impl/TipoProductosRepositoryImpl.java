@@ -47,11 +47,12 @@ public class TipoProductosRepositoryImpl implements TipoProductosRepository {
 	}
 
 	@Override
-	public Producto crearProducto(Integer userID, Integer tipoProductoID, String name, Integer stock, Double price, String description,
+	public boolean crearProducto(Integer userID, Integer tipoProductoID, String name, Integer stock, Double price, String description,
 			Integer idStatus) {
 		
 		
 		//CREAR PRODUCTO
+		boolean registroExitoso = false;
 		LocalDateTime fecha = LocalDateTime.now();
 		DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String fechaFormateada = fecha.format(myFormatObj);
@@ -75,20 +76,17 @@ public class TipoProductosRepositoryImpl implements TipoProductosRepository {
 
 			
 			statement.executeUpdate();
-
+			registroExitoso = true;
 			//ventaHecha = true;
 
 		}
 
 		catch (Exception e) {
 			e.printStackTrace();
-			//return ventaHecha == false;
+			return registroExitoso == false;
 		}
 
-	
-
-		
-		return null;
+		return registroExitoso;
 	}
 
 }

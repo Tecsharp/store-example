@@ -1,13 +1,13 @@
 package com.tecsharp.store.controllers.productos;
 
-import java.util.InputMismatchException;
+
 import java.util.List;
 import java.util.Scanner;
 
 import com.tecsharp.store.entity.productos.Producto;
 import com.tecsharp.store.entity.productos.TipoProducto;
 import com.tecsharp.store.entity.usuarios.Usuario;
-import com.tecsharp.store.repository.productos.impl.ProductosRepositoryImpl;
+
 import com.tecsharp.store.service.productos.impl.ProductosServiceImpl;
 
 import com.tecsharp.store.utils.Utilidad;
@@ -29,7 +29,7 @@ public class ProductosController {
 			int i = 1;
 			for (Producto productos1 : productos) {
 
-				if (productos1.getStock() >= 0 || productos1.getStatus() == 1) {
+				if (productos1.getStock() >= 0 && productos1.getStatus() == 1) {
 					dispStock = "  |=| Stock disponible: " + productos1.getStock();
 					if (productos1.getStock() == 0) {
 						dispStock = "  |=| Stock no disponible: ";
@@ -70,18 +70,20 @@ public class ProductosController {
 			System.out.println("1. Seleccionar articulo");
 			System.out.println("Presiona cualquier tecla para regresar");
 			agregarOpcion = sc.nextInt();
+			Utilidad.clearScreen();
 
 			if (agregarOpcion == 1) {
 				if (producto.getStock() == 0) {
 					System.out.println("PRODUCTO AGOTADO");
 					System.out.println("PRESIONA ENTER PARA CONTINUAR");
+					Utilidad.clearScreen();
 					try {
 						System.in.read();
 					} catch (Exception e) {
 					}
 					return null;
 				}
-				return producto;
+				
 			} else {
 				return null;
 			}

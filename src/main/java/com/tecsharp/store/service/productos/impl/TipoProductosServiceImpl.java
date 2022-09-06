@@ -3,7 +3,7 @@ package com.tecsharp.store.service.productos.impl;
 
 import java.util.List;
 
-import com.tecsharp.store.entity.productos.Producto;
+
 import com.tecsharp.store.entity.productos.TipoProducto;
 import com.tecsharp.store.repository.productos.impl.TipoProductosRepositoryImpl;
 import com.tecsharp.store.service.productos.TipoProductosService;
@@ -30,7 +30,7 @@ public class TipoProductosServiceImpl implements TipoProductosService {
 	}
 
 	@Override
-	public Producto crearProducto(Integer userID, Integer tipoProductoID, String name, Integer stock, Double price, String description, Integer idStatus) {
+	public boolean crearProducto(Integer userID, Integer tipoProductoID, String name, Integer stock, Double price, String description, Integer idStatus) {
 		TipoProductosRepositoryImpl nuevosProductos = new TipoProductosRepositoryImpl();
 		return nuevosProductos.crearProducto(userID, tipoProductoID, name, stock, price, description, idStatus);
 	}

@@ -43,6 +43,7 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 				producto.setDescription(result.getString("description"));
 				producto.setDateCreate(result.getDate("date_Create"));
 				producto.setDateUpdate(result.getDate("date_update"));
+				producto.setStatus(result.getInt("id_status"));
 				productos.add(producto);
 			}
 		}

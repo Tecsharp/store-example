@@ -16,6 +16,7 @@ public class UsuariosRepositoryImpl implements UsuariosRpository {
 
 		Usuario usuario = null;
 		String query = "SELECT name_usr, username, passwd, user_type FROM users WHERE id_user = ?";
+		
 
 		try (Connection connection = DriverManager.getConnection(Constantes.DB_PROPERTIES);
 				PreparedStatement statement = connection.prepareStatement(query)) {
