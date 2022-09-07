@@ -1,6 +1,5 @@
 package com.tecsharp.store.controllers.productos;
 
-
 import java.util.List;
 import java.util.Scanner;
 
@@ -39,7 +38,12 @@ public class ProductosController {
 				System.out.println(i++ + ": ".concat(productos1.getName()).concat(dispStock));
 			}
 
+			
 			idProducto = sc.nextInt();
+			if(idProducto == 1) {
+				Utilidad.esOpcionUnoCorrecto(idProducto);
+			}
+			
 			Producto productoRecuperado = productos.get(idProducto - 1);
 
 			producto = service.validaProductoID(productoRecuperado.getIdProduct(), productos); // Envia entero y lista
@@ -67,26 +71,38 @@ public class ProductosController {
 			System.out.println("Precio: " + producto.getPrice());
 			System.out.println("Caracteristicas: " + producto.getDescription());
 			System.out.println("");
-			System.out.println("1. Seleccionar articulo");
-			System.out.println("Presiona cualquier tecla para regresar");
-			agregarOpcion = sc.nextInt();
-			Utilidad.clearScreen();
 
-			if (agregarOpcion == 1) {
-				if (producto.getStock() == 0) {
-					System.out.println("PRODUCTO AGOTADO");
-					System.out.println("PRESIONA ENTER PARA CONTINUAR");
-					Utilidad.clearScreen();
-					try {
-						System.in.read();
-					} catch (Exception e) {
+			System.out.println("1. SELECCIONAR ARTICULO");
+			System.out.println("Presiona cualquier tecla para regresar");
+
+			boolean isEntero = false;
+			while (!isEntero) { // VALIDA QUE SEA UN ENTERO POSITIVO Y NO UNA LETRA
+				try {
+
+					Scanner sc2 = new Scanner(System.in);
+					agregarOpcion = sc2.nextInt();
+					if (agregarOpcion == 1) {
+						isEntero = true;
+						if (producto.getStock() == 0) {
+							System.out.println("PRODUCTO AGOTADO");
+							System.out.println("PRESIONA ENTER PARA CONTINUAR");
+							
+							try {
+								System.in.read();
+							} catch (Exception e) {
+							}
+						}
+						return producto;
+
+					} else {
 					}
-					return null;
+				} catch (Exception e) {
+					isEntero = false;
+					agregarOpcion = null;
+					System.out.println("AGREGA UN NUMERO VALIDO");
 				}
-				
-			} else {
-				return null;
 			}
+
 		}
 		return null;
 
@@ -105,17 +121,17 @@ public class ProductosController {
 
 			boolean validStock = false;
 			while (!validStock) {
-				Utilidad.clearScreen();
+
 				System.out.println("Has seleccionado: " + productoNombre + "." + " (" + producto.getStock() + ")"
 						+ " Unidades disponibles");
 				System.out.println("INGRESE NUMERO DE UNIDADES (SOLO NUMEROS)");
 
 				boolean isEntero = false;
 
-				while (!isEntero) { //VALIDA QUE SEA UN ENTERO POSITIVO Y NO UNA LETRA
+				while (!isEntero) { // VALIDA QUE SEA UN ENTERO POSITIVO Y NO UNA LETRA
 					try {
 						Scanner sc = new Scanner(System.in);
-						System.out.println("Ingresa un digito");
+						System.out.println("INGRESA LA CANTIDAD DE UNIDADES");
 						numItems = sc.nextInt();
 						if (numItems > 0) {
 							isEntero = true;
@@ -268,7 +284,7 @@ public class ProductosController {
 				onCart = false;
 			}
 
-			Utilidad.clearScreen();
+
 			onCart = false;
 		}
 

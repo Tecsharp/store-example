@@ -41,7 +41,6 @@ public class StoreMain {
 
 			} else {
 				System.out.println("Regresando al inicio");
-				Utilidad.clearScreen();
 			}
 		}
 

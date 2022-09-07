@@ -3,7 +3,6 @@ package com.tecsharp.store.controllers.productos;
 import java.util.List;
 import java.util.Scanner;
 
-
 import com.tecsharp.store.entity.productos.TipoProducto;
 import com.tecsharp.store.entity.usuarios.Usuario;
 import com.tecsharp.store.service.productos.impl.TipoProductosServiceImpl;
@@ -42,7 +41,7 @@ public class TipoProductosController {
 			if (idTipoProducto == 0) {
 				Utilidad.clearScreen();
 				verCarrito.verCarrito(usuario);
-				
+
 			} else if (idTipoProducto == 9) {
 				Utilidad.clearScreen();
 				// UsuariosController usuarios = new UsuariosController();
@@ -51,7 +50,7 @@ public class TipoProductosController {
 				Utilidad.clearScreen();
 				crearProductoVista(usuario);
 			}
-			
+
 			Utilidad.clearScreen();
 			tipoProducto = service.validaTipoProductoID(idTipoProducto, tipoProductos);
 			Utilidad.clearScreen();
@@ -84,7 +83,7 @@ public class TipoProductosController {
 
 		while (!isEntero) { // VALIDA QUE SEA UN ENTERO POSITIVO Y NO UNA LETRA
 			try {
-				
+
 				Scanner sc2 = new Scanner(System.in);
 				System.out.println("INGRESA EL TIPO DE PRODUCTO A REGISTRAR");
 				tipoProductoID = sc2.nextInt();
@@ -101,12 +100,10 @@ public class TipoProductosController {
 		System.out.println("Ingresa el nombre del producto");
 		name = sc.nextLine();
 
-
 		System.out.println("Ingresa la descripcion");
 		description = sc.nextLine();
 
 		isEntero = false;
-
 		while (!isEntero) { // VALIDA QUE SEA UN ENTERO POSITIVO Y NO UNA LETRA
 			try {
 				Scanner sc2 = new Scanner(System.in);
@@ -127,14 +124,13 @@ public class TipoProductosController {
 
 		System.out.println("Ingresa 1 si esta activo o 2 para inactivo");
 		Integer idStatus = sc.nextInt();
-		
-		
-		//AGREGAR UN IF A service.crearProducto
-		Utilidad.clearScreen();
-		if(service.crearProducto(userID, tipoProductoID, name, stock, price, description, idStatus)){
+
+		// AGREGAR UN IF A service.crearProducto
+
+		if (service.crearProducto(userID, tipoProductoID, name, stock, price, description, idStatus)) {
 			System.out.println("EL PRODUCTO SE HA REGISTRADO CORRECTAMENTE");
 			System.out.println("PRESIONA ENTER PARA CONTINUAR");
-			Utilidad.clearScreen();
+
 			try {
 				System.in.read();
 			} catch (Exception e) {
@@ -142,7 +138,7 @@ public class TipoProductosController {
 		} else {
 			System.out.println("HUBO UN ERROR AL REGISTRAR EL PRODUCTO");
 			System.out.println("PRESIONA ENTER PARA CONTINUAR");
-			Utilidad.clearScreen();
+
 			try {
 				System.in.read();
 			} catch (Exception e) {
