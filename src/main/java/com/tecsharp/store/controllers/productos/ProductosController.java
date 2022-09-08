@@ -19,7 +19,7 @@ public class ProductosController {
 		Producto producto = null;
 
 		while (producto == null) {
-			Scanner sc = new Scanner(System.in);
+			
 			System.out.println("SELECCIONA UN PRODUCTO\n");
 			ProductosServiceImpl service = new ProductosServiceImpl();
 			List<Producto> productos = service.getProducto(tipoProducto);
@@ -37,11 +37,17 @@ public class ProductosController {
 
 				System.out.println(i++ + ": ".concat(productos1.getName()).concat(dispStock));
 			}
+			boolean isEntero = false;
+			while (!isEntero) {
+				try {
+					Scanner sc = new Scanner(System.in);
+					idProducto = sc.nextInt();
+					isEntero = true;
+				} catch (Exception e) {
+					System.out.println("INGRESA UN DATO NUMERICO");
+					isEntero = false;
+				}
 
-			
-			idProducto = sc.nextInt();
-			if(idProducto == 1) {
-				Utilidad.esOpcionUnoCorrecto(idProducto);
 			}
 			
 			Producto productoRecuperado = productos.get(idProducto - 1);
@@ -72,36 +78,50 @@ public class ProductosController {
 			System.out.println("Caracteristicas: " + producto.getDescription());
 			System.out.println("");
 
-			System.out.println("1. SELECCIONAR ARTICULO");
+			System.out.println("1. PARA CONFIRMAR ARTICULO");
 			System.out.println("Presiona cualquier tecla para regresar");
-
-			boolean isEntero = false;
-			while (!isEntero) { // VALIDA QUE SEA UN ENTERO POSITIVO Y NO UNA LETRA
-				try {
-
-					Scanner sc2 = new Scanner(System.in);
-					agregarOpcion = sc2.nextInt();
-					if (agregarOpcion == 1) {
-						isEntero = true;
-						if (producto.getStock() == 0) {
-							System.out.println("PRODUCTO AGOTADO");
-							System.out.println("PRESIONA ENTER PARA CONTINUAR");
-							
-							try {
-								System.in.read();
-							} catch (Exception e) {
-							}
-						}
-						return producto;
-
-					} else {
+			
+			if(Utilidad.esOpcionUnoCorrecto()) { //VALIDA SI LA "CONFIRMAR" ES CORRECTA
+				if (producto.getStock() == 0) {
+					System.out.println("PRODUCTO AGOTADO");
+					System.out.println("PRESIONA ENTER PARA CONTINUAR");
+					producto = null;
+					try {
+						System.in.read();
+					} catch (Exception e) {
 					}
-				} catch (Exception e) {
-					isEntero = false;
-					agregarOpcion = null;
-					System.out.println("AGREGA UN NUMERO VALIDO");
 				}
+				return producto;
 			}
+
+			
+//			boolean isEntero = false;
+//			while (!isEntero) { // VALIDA QUE SEA UN ENTERO POSITIVO Y NO UNA LETRA
+//				try {
+//
+//					Scanner sc2 = new Scanner(System.in);
+//					agregarOpcion = sc2.nextInt();
+//					if (agregarOpcion == 1) {
+//						isEntero = true;
+//						if (producto.getStock() == 0) {
+//							System.out.println("PRODUCTO AGOTADO");
+//							System.out.println("PRESIONA ENTER PARA CONTINUAR");
+//
+//							try {
+//								System.in.read();
+//							} catch (Exception e) {
+//							}
+//						}
+//						return producto;
+//
+//					} else {
+//					}
+//				} catch (Exception e) {
+//					isEntero = false;
+//					agregarOpcion = null;
+//					System.out.println("AGREGA UN NUMERO VALIDO");
+//				}
+//			}
 
 		}
 		return null;
@@ -146,9 +166,11 @@ public class ProductosController {
 				if (numItems > producto.getStock()) {
 					System.out.println("NO HAY UNIDADES SUFICIENTES\n");
 					System.out.println("PRESIONA ENTER PARA CONTINUAR");
+					
 					try {
 						System.in.read();
 					} catch (Exception e) {
+						return false;
 					}
 				} else if (numItems <= producto.getStock() && numItems > 0) {
 					validStock = true;
@@ -164,11 +186,9 @@ public class ProductosController {
 			}
 			System.out.println("Ingresa 1 para confirmar");
 			System.out.println("Presiona cualquier tecla para rechazar");
-			Scanner sc = new Scanner(System.in);
-			agregarOpcion = sc.nextInt();
-			sc.close();
+
 			boolean productoDuplicado = false;
-			if (agregarOpcion == 1) {
+			if (Utilidad.esOpcionUnoCorrecto() == true) { //VALIDA SI LA OPCION 1 DE CONFIRMAR ES CORRECTA
 
 				if (carritoProductoEsIgual(productoID, usuario, numItems) == true) {
 					productoDuplicado = true;
@@ -283,7 +303,6 @@ public class ProductosController {
 				System.out.println("Compra cancelada");
 				onCart = false;
 			}
-
 
 			onCart = false;
 		}
