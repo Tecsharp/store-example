@@ -14,7 +14,7 @@ import java.util.List;
 
 
 import com.tecsharp.store.entity.productos.Producto;
-
+import com.tecsharp.store.entity.productos.TipoProducto;
 import com.tecsharp.store.entity.usuarios.Usuario;
 import com.tecsharp.store.repository.productos.ProductosRpository;
 import com.tecsharp.store.service.productos.impl.ProductosServiceImpl;
@@ -23,14 +23,14 @@ import com.tecsharp.store.utils.Constantes;
 public class ProductosRepositoryImpl implements ProductosRpository {
 
 	@Override
-	public List<Producto> getProductos(Integer tipoProducto) {
+	public List<Producto> getProductos(TipoProducto tipoProducto) {
 		List<Producto> productos = new ArrayList<>();
 
 		String query = "SELECT * FROM products WHERE product_type = ?";
 
 		try (Connection connection = DriverManager.getConnection(Constantes.DB_PROPERTIES);
 				PreparedStatement statement = connection.prepareStatement(query)) {
-			statement.setInt(1, tipoProducto);
+			statement.setInt(1, tipoProducto.getIdProductType());
 
 			ResultSet result = statement.executeQuery();
 
@@ -40,6 +40,7 @@ public class ProductosRepositoryImpl implements ProductosRpository {
 				producto.setName(result.getString("name"));
 				producto.setStock(result.getInt("stock"));
 				producto.setPrice(result.getDouble("price"));
+				producto.setProductType(tipoProducto);
 				producto.setDescription(result.getString("description"));
 				producto.setDateCreate(result.getDate("date_Create"));
 				producto.setDateUpdate(result.getDate("date_update"));

@@ -13,7 +13,7 @@ public class Usuario extends TipoUsuario {
 	private String lastNameUsr;
 	private String password;
 	private String email;
-	private Integer userType;
+	private TipoUsuario userType;
 	private String description;
 	private Integer userCreate;
 	private Integer userUpdate;

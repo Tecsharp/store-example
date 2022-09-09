@@ -118,7 +118,7 @@ public class ProductosController {
 
 			if (Utilidad.esOpcionUnoCorrecto()) { // VALIDA SI LA "CONFIRMAR" ES CORRECTA
 
-				if (usuario.getUserType() == 2) {
+				if (usuario.getIdTypeUser() == 2) {
 					return producto;
 				}
 

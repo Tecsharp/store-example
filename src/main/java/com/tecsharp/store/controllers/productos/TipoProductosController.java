@@ -38,7 +38,7 @@ public class TipoProductosController {
 					System.out.println("8. Ver compras");
 					System.out.println("9. Cerrar sesion");
 
-					if (usuario.getUserType() == 2) {
+					if (usuario.getIdTypeUser() == 2) {
 						System.out.println("\n============ ADMIN ============");
 						System.out.println("7. Herramientas de administrador");
 					}

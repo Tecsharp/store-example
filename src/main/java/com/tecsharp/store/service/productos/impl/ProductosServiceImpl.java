@@ -14,7 +14,7 @@ public class ProductosServiceImpl implements ProductosService {
 	@Override
 	public List<Producto> getProducto(TipoProducto tipoProducto) {
 		ProductosRepositoryImpl producto = new ProductosRepositoryImpl();
-		return producto.getProductos(tipoProducto.getIdProductType());
+		return producto.getProductos(tipoProducto);
 	}
 
 	@Override
