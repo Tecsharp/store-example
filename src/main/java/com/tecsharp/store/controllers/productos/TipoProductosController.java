@@ -171,7 +171,7 @@ public class TipoProductosController {
 		System.out.println("Herramientas de administrador:\n");
 		System.out.println("1. Crear producto");
 		System.out.println("2. Modificar producto");
-		System.out.println("3. Activar o desactivar producto");
+		//System.out.println("3. Activar o desactivar producto");
 		Producto producto = null;
 		TipoProducto tipoProducto = null;
 		Scanner sc = new Scanner(System.in);
