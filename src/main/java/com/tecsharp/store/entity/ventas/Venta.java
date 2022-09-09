@@ -12,6 +12,7 @@ import lombok.Data;
 @Data
 public class Venta {
 	
+	private String nameProduct;
 	private Integer idSale;
 	private Usuario idUser;
 	private Producto idProduct;

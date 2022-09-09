@@ -15,8 +15,9 @@ public class Utilidad {
 		while (!isEntero) { // VALIDA QUE SEA UN ENTERO POSITIVO Y NO UNA LETRA
 			try {
 				Scanner sc = new Scanner(System.in);
-				System.out.println("1. PARA CONFIRMAR");
+				//System.out.println("1. PARA CONFIRMAR");
 				Integer opcion = sc.nextInt();
+				
 				if (opcion == 1) {
 					isEntero = true;
 					return true;
@@ -26,7 +27,10 @@ public class Utilidad {
 				}
 			} catch (Exception e) {
 				isEntero = false;
-				System.out.println("AGREGA UN NUMERO VALIDO");
+				//System.out.println("AGREGA UN NUMERO VALIDO");
+				//boolean back = false;
+				return false;
+				
 			}
 		}
 		

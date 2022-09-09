@@ -1,5 +1,6 @@
 package com.tecsharp.store.controllers.productos;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,38 +20,72 @@ public class ProductosController {
 		Producto producto = null;
 
 		while (producto == null) {
-			
-			System.out.println("SELECCIONA UN PRODUCTO\n");
 			ProductosServiceImpl service = new ProductosServiceImpl();
 			List<Producto> productos = service.getProducto(tipoProducto);
+			List<Producto> nuevosproductos = new ArrayList<>();
 
-			String dispStock = null;
-			int i = 1;
-			for (Producto productos1 : productos) {
-
-				if (productos1.getStock() >= 0 && productos1.getStatus() == 1) {
-					dispStock = "  |=| Stock disponible: " + productos1.getStock();
-					if (productos1.getStock() == 0) {
-						dispStock = "  |=| Stock no disponible: ";
-					}
-				}
-
-				System.out.println(i++ + ": ".concat(productos1.getName()).concat(dispStock));
-			}
+//			try {
+//				System.out.println("INGRESA CUALQUIER TECLA PARA RETROCEDER");
+//				Scanner sc = new Scanner(System.in);
+//				idProducto = sc.nextInt();
+//				
+//			} catch (Exception e) {
+//				
+//				return null;
+//			}
 			boolean isEntero = false;
 			while (!isEntero) {
 				try {
+					String dispStock = null;
+					int i = 1;
+					for (Producto productos1 : productos) {
+
+						if (productos1.getStock() >= 0 && productos1.getStatus() == 1) {
+							nuevosproductos.add(productos1); // SE AGREGAN LOS PRODUCTOS
+																// CON STATUS 1 A UNA NUEVA LISTA
+						} else {
+
+						}
+
+					}
+					System.out.println("------------------------");
+					int o = 1;
+					for (Producto productos2 : nuevosproductos) {
+
+						if (productos2.getStock() >= 0 && productos2.getStatus() == 1) {
+							dispStock = "  |=| Stock disponible: " + productos2.getStock();
+							if (productos2.getStock() == 0) {
+								dispStock = "  |=| Stock no disponible: ";
+							}
+
+							System.out.println(o++ + ": ".concat(productos2.getName()).concat(dispStock));
+
+						} else {
+							// System.out.println("no esta activo");
+
+						}
+
+					}
+
+					System.out.println("\nINGRESA TECLA 0 PARA SALIR");
 					Scanner sc = new Scanner(System.in);
 					idProducto = sc.nextInt();
-					isEntero = true;
+					if (idProducto <= nuevosproductos.size() && idProducto != 0) {
+						isEntero = true;
+
+					} else {
+						return null;
+					}
+
 				} catch (Exception e) {
+					Utilidad.clearScreen();
 					System.out.println("INGRESA UN DATO NUMERICO");
 					isEntero = false;
 				}
 
 			}
-			
-			Producto productoRecuperado = productos.get(idProducto - 1);
+
+			Producto productoRecuperado = nuevosproductos.get(idProducto - 1);
 
 			producto = service.validaProductoID(productoRecuperado.getIdProduct(), productos); // Envia entero y lista
 																								// productos
@@ -62,12 +97,12 @@ public class ProductosController {
 
 	}
 
-	public Producto mostrarArticuloSeleccionado(Producto producto, TipoProducto tipoProducto) {
+	public Producto mostrarArticuloSeleccionado(Usuario usuario, Producto producto, TipoProducto tipoProducto) {
 
 		Scanner sc = new Scanner(System.in);
 //		ProductosServiceImpl service = new ProductosServiceImpl();
 //		List<Producto> productos = service.getProducto(tipoProducto);
-
+		// boolean back = true;
 		Integer agregarOpcion = null;
 		while (agregarOpcion == null) {
 
@@ -79,9 +114,14 @@ public class ProductosController {
 			System.out.println("");
 
 			System.out.println("1. PARA CONFIRMAR ARTICULO");
-			System.out.println("Presiona cualquier tecla para regresar");
-			
-			if(Utilidad.esOpcionUnoCorrecto()) { //VALIDA SI LA "CONFIRMAR" ES CORRECTA
+			System.out.println("Presiona cualquier tecla para salir");
+
+			if (Utilidad.esOpcionUnoCorrecto()) { // VALIDA SI LA "CONFIRMAR" ES CORRECTA
+
+				if (usuario.getUserType() == 2) {
+					return producto;
+				}
+
 				if (producto.getStock() == 0) {
 					System.out.println("PRODUCTO AGOTADO");
 					System.out.println("PRESIONA ENTER PARA CONTINUAR");
@@ -92,9 +132,11 @@ public class ProductosController {
 					}
 				}
 				return producto;
+			} else {
+				System.out.println("se regreso");
+				return null;
 			}
 
-			
 //			boolean isEntero = false;
 //			while (!isEntero) { // VALIDA QUE SEA UN ENTERO POSITIVO Y NO UNA LETRA
 //				try {
@@ -166,7 +208,7 @@ public class ProductosController {
 				if (numItems > producto.getStock()) {
 					System.out.println("NO HAY UNIDADES SUFICIENTES\n");
 					System.out.println("PRESIONA ENTER PARA CONTINUAR");
-					
+
 					try {
 						System.in.read();
 					} catch (Exception e) {
@@ -188,7 +230,7 @@ public class ProductosController {
 			System.out.println("Presiona cualquier tecla para rechazar");
 
 			boolean productoDuplicado = false;
-			if (Utilidad.esOpcionUnoCorrecto() == true) { //VALIDA SI LA OPCION 1 DE CONFIRMAR ES CORRECTA
+			if (Utilidad.esOpcionUnoCorrecto() == true) { // VALIDA SI LA OPCION 1 DE CONFIRMAR ES CORRECTA
 
 				if (carritoProductoEsIgual(productoID, usuario, numItems) == true) {
 					productoDuplicado = true;
@@ -220,9 +262,21 @@ public class ProductosController {
 	public boolean validarAgregarCarrito(boolean enCarrito) {
 
 		if (enCarrito = true) {
-			System.out.println("El producto se agrego correctamente xd");
+
+			try {
+				System.out.println("El producto se agrego correctamente xd");
+				System.out.println("Presiona enter para continuar");
+				System.in.read();
+			} catch (Exception e) {
+			}
 		} else {
-			System.out.println("El producto no se agrego al carrito. Intenta de nuevo.");
+
+			try {
+				System.out.println("El producto no se agrego al carrito. Intenta de nuevo.");
+				System.out.println("Presiona enter para continuar");
+				System.in.read();
+			} catch (Exception e) {
+			}
 		}
 		return enCarrito;
 
@@ -270,12 +324,29 @@ public class ProductosController {
 			System.out.println("2. Limpiar carrito");
 			System.out.println("3. Cancelar");
 
-			option = sc.nextInt();
+			boolean isEntero = false;
+
+			while (!isEntero) { // VALIDA QUE SEA UN ENTERO POSITIVO Y NO UNA LETRA
+				try {
+
+					Scanner sc2 = new Scanner(System.in);
+					option = sc2.nextInt();
+					if (option > 0 && option <= 3) {
+						isEntero = true;
+					} else {
+					}
+				} catch (Exception e) {
+					isEntero = false;
+					System.out.println("AGREGA UN NUMERO VALIDO");
+				}
+			}
+
 			if (option == 1) {
 				option = null;
-				System.out.println("Presiona 1 para confirmar compra\n2. Cancelar");
-				option = sc.nextInt();
-				if (option == 1) {
+				System.out.println("1.CONFIRMAR PARA CONFIRMAR COMPRA \n2.CANCELAR PARA CENLAR COMPRA");
+
+				if (Utilidad.esOpcionUnoCorrecto()) {
+
 					if (service.comprarCarrito(productos, usuario)) {
 						System.out.println("GRACIAS POR TU COMPRA");
 						System.out.println("PRESIONA ENTER PARA CONTINUAR");
@@ -292,7 +363,13 @@ public class ProductosController {
 						}
 					}
 				} else {
+					System.out.println("Compra cancelada");
 					onCart = false;
+					System.out.println("PRESIONA ENTER PARA CONTINUAR");
+					try {
+						System.in.read();
+					} catch (Exception e) {
+					}
 				}
 
 			} else if (option == 2) {
@@ -303,10 +380,9 @@ public class ProductosController {
 				System.out.println("Compra cancelada");
 				onCart = false;
 			}
-
-			onCart = false;
 		}
 
+		onCart = false;
 	}
 
 }

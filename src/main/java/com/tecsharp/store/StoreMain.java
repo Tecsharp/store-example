@@ -9,9 +9,9 @@ import com.tecsharp.store.entity.usuarios.Usuario;
 import com.tecsharp.store.utils.Utilidad;
 
 public class StoreMain {
- 
+
 	public static void main(String[] args) {
-		
+
 		System.out.println("========================");
 		System.out.println("BIENVENIDO A MI TIENDITA");
 		System.out.println("========================");
@@ -21,22 +21,23 @@ public class StoreMain {
 
 		while (usuario == null) {
 			usuario = usuarios.login();
-			
-		}
-	
 
+		}
 
 		Object isProducto = null;
 		while (isProducto == null) {
 			// INSTANCIAS //
 			TipoProductosController tipoProductos = new TipoProductosController();
 			ProductosController productos = new ProductosController();
-			
-			TipoProducto tipoProducto = tipoProductos.getTypeProductID(usuario); // Obtiene la lista de departamentos
+			Producto producto = null;
+			TipoProducto tipoProducto = null;
+			while (producto == null) {
+				tipoProducto = tipoProductos.getTypeProductID(usuario); // Obtiene la lista de
+	
+				producto = productos.getProductos(tipoProducto); // Obtiene la lista de productos
 
-			Producto producto = productos.getProductos(tipoProducto); // Obtiene la lista de productos
-
-			if (productos.mostrarArticuloSeleccionado(producto, tipoProducto) != null) {
+			}
+			if (productos.mostrarArticuloSeleccionado(usuario, producto, tipoProducto) != null) {
 				productos.agregarAlCarritoVista(producto, usuario);
 
 			} else {
